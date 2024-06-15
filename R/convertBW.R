@@ -1,6 +1,6 @@
 #' convertBW
 #'
-#' @param domainName A character vector that contains teh acronym for the domain
+#' @param domainName A character vector that contains the acronym for the domain
 #' @param domainData The dataframe containing the export of Provantis
 #'
 #' @return SEND Converted Domain as dataframe
