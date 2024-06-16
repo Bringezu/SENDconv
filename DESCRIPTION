@@ -1,0 +1,20 @@
+Package: SendConv
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9000
+Authors@R: 
+    person("Frank", "Bringezu", , "frank.bringezu@merckgroup.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-3628-6317"))
+Description: This package reads Provantis Export Files to convert them to SEND Format.
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Imports: 
+    data.table,
+    magrittr,
+    dplyr,
+    methods,
+    tibble
+Depends: 
+    R (>= 2.10)
+LazyData: true
