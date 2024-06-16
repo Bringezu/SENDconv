@@ -17,6 +17,8 @@ exportDomain(domain, fileformat, outdir)
 exportDomain
 }
 \examples{
-exportDomain('BW', 'csv', 'outdir')
+domain<-'BW'
+bw<-convertBW(domain)
+exportDomain(bw, 'csv', 'outdir')
 
 }
