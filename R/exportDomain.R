@@ -4,7 +4,9 @@
 #' @param outdir directory name for saving the output files
 #' @param fileformat either csv, or pdf are supported
 #' @examples
-#' exportDomain('BW', 'csv', 'outdir')
+#' domain<-'BW'
+#' bw<-convert(domain)
+#' exportDomain(bw, 'csv', 'outdir')
 #'
 exportDomain<-function(domain, fileformat, outdir){
   stopifnot(is.data.frame(domain), length(domain) >=1)
