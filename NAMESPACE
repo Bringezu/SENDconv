@@ -3,6 +3,7 @@
 export("%>%")
 export(convertBW)
 export(convertCL)
+export(convertEG)
 export(convertLB)
 export(convertMA)
 export(loadDomain)
