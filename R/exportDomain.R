@@ -10,8 +10,8 @@
 #'
 exportDomain<-function(domain, fileformat, outdir){
   stopifnot(is.data.frame(domain), length(domain) >=1)
-  stopifnot(is.character(fileformat), fileformat %in% c('csv','pdf'))
-  stopifnot(file.exists(outdir), 'Please select a directory name to store the output!')
+  stopifnot(is.character(fileformat))
+  stopifnot(file.exists(outdir))
   
   switch (fileformat,
           'pdf' = {

@@ -20,5 +20,5 @@ SendConv
 domains<-c('BW', 'LB')
 indir<-'c:/temp/mquest_send/Provantis/DA/ARCH'
 outdir<-'c:/temp/mquest_send/Provantis/DA/ARCH/output'
-SendConf(domains, indir, outdir)
+SendConv(domains, indir, outdir)
 }

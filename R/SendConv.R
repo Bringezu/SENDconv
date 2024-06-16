@@ -9,16 +9,16 @@
 #' domains<-c('BW', 'LB')
 #' indir<-'c:/temp/mquest_send/Provantis/DA/ARCH'
 #' outdir<-'c:/temp/mquest_send/Provantis/DA/ARCH/output'
-#' SendConf(domains, indir, outdir)
+#' SendConv(domains, indir, outdir)
 SendConv<-function(domains, indir, outdir){
-  stopifnot(is.character(domains), 'Please provide a list of domains to be processed!')
-  stopifnot(file.exists(indir), 'Please select a directory name to read the input!')
-  stopifnot(file.exists(outdir), 'Please select a directory name to store the output!')
+  stopifnot(is.character(domains))
+  stopifnot(file.exists(indir))
+  stopifnot(file.exists(outdir))
   
   for (i in domains){
-    d<-loadDomain(domains[i], indir)
+    d<-loadDomain(i, indir)
     
-    switch(domains[i], 
+    switch(i, 
            'BW'={
              cd<-convertBW('BW', d)
             },
