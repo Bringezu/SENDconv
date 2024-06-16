@@ -3,6 +3,7 @@
 export("%>%")
 export(convertBW)
 export(convertCL)
+export(convertLB)
 export(convertMA)
 export(loadDomain)
 importFrom(magrittr,"%>%")
