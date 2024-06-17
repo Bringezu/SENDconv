@@ -22,7 +22,7 @@ exportDomain<-function(domain, fileformat, outdir){
           'csv' = {
             # Encoding(domain)<-'UTF-8'
             #write.table(domain, file=paste0(outdir,'SEND_',name,'.txt'), quote = F, fileEncoding = 'UTF-8', row.names = F, na='', dec='.', sep='\t')
-            data.
+            
             data.table::fwrite(domain, file=paste0(outdir,'SEND_',domain$DOMAIN %>% unique(),'.txt'), quote = F, showProgress=T, row.names = F, na='', dec='.', sep='\t')
             # write_delim(domain, path = paste0(outdir,'SEND_',name,'.txt'), delim = "\t")
           }
