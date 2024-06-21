@@ -4,7 +4,6 @@
 #' @param domainData The data frame containing the export of Provantis
 #'
 #' @return SEND Converted Domain as data frame
-#' @export
 #'
 #' @examples
 #'  domainName<-'DM'

@@ -1,92 +1,30 @@
 #' SendConv
-#'
-#' @param domains character list of domains to be processed
+#' The main file to manange the conversion. 
+#' To control which domains are converted, the system uses a local environment.
 #' @param indir directory for input files
 #' @param outdir directory for outout files 
 #'
 #'
 #' @examples
-#' domains<-c('BW', 'LB')
+#' c<-config() # load configuration
+#' # select domains (Here only BW and DM)
+#' c<-c %>% dplyr::filter(name %in% c("BW", "DM"))
 #' indir<-'c:/temp/mquest_send/Provantis/DA/ARCH'
 #' outdir<-'c:/temp/mquest_send/Provantis/DA/ARCH/output'
-#' SendConv(domains, indir, outdir)
-SendConv<-function(domains, indir, outdir){
-  stopifnot(is.character(domains))
+#' SendConv(indir, outdir)
+SendConv<-function(indir, outdir){
   stopifnot(file.exists(indir))
   stopifnot(file.exists(outdir))
   
-  for (i in domains){
-    d<-loadDomain(i, indir)
-    
-    switch(i, 
-           'BW'={
-             cd<-convertBW('BW', d)
-            },
-           'CL'={
-             
-             
-           },
-           'CV'={
-             
-             
-             
-           },
-           'DS'={
-             
-           }, 
-           'DM'= {
-             
-             
-           },
-           'LB' = {
-             
-             
-           },
-           'EG'={
-             
-             
-           },
-           'EX'={
-             
-             
-           },
-           'FC'={
-             
-             
-           },
-           'MA' = {
-             
-           },
-           'MI' = {
-             
-           },
-           'OM' = {
-             
-           },
-           
-           
-           'RE' = {
-             
-           },
-           
-           
-           'TA' = {
-             
-           },
-           
-           
-           'VS' = {
-           },
-           'TS' = {
-             
-           },
-           
-           print(paste0("Domain: ", domain," not configured!"))
-    )   
-    
-    
+  c<-config()
+  
+  for (i in seq_along(c)) {
+    d<-loadDomain(c$name[i], indir)
+    f<-match.fun(c$run[i])
+    cd<-f(c$name[i], d)
     exportDomain(cd,'csv', outdir)
   }
   
-  
 }
+  
+  

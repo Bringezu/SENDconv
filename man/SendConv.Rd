@@ -2,23 +2,27 @@
 % Please edit documentation in R/SendConv.R
 \name{SendConv}
 \alias{SendConv}
-\title{SendConv}
+\title{SendConv
+The main file to manange the conversion.
+To control which domains are converted, the system uses a local environment.}
 \usage{
-SendConv(domains, indir, outdir)
+SendConv(indir, outdir)
 }
 \arguments{
-\item{domains}{character list of domains to be processed}
-
 \item{indir}{directory for input files}
 
 \item{outdir}{directory for outout files}
 }
 \description{
 SendConv
+The main file to manange the conversion.
+To control which domains are converted, the system uses a local environment.
 }
 \examples{
-domains<-c('BW', 'LB')
+c<-config() # load configuration
+# select domains (Here only BW and DM)
+c<-c \%>\% dplyr::filter(name \%in\% c("BW", "DM"))
 indir<-'c:/temp/mquest_send/Provantis/DA/ARCH'
 outdir<-'c:/temp/mquest_send/Provantis/DA/ARCH/output'
-SendConv(domains, indir, outdir)
+SendConv(indir, outdir)
 }
