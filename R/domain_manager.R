@@ -1,6 +1,6 @@
 #'Create a new environment and define a tibble with Acronyms and functions
 the<-new.env(parent = emptyenv())
-the$conf<-tibble::tibble(name=c('BW', 'CL','CV', 'DM','DS', 'EX','FW','LB', 'MA', 'MI', 'OM', 'RE','TA', 'VS'), 
+the$conf<-tibble::tibble(name=c('BW', 'CL','CV', 'DM','DS', 'EX','FC','LB', 'MA', 'MI', 'OM', 'RE','TA', 'VS'), 
                             run=c('convertBW', 'convertCL','convertCV', 'convertDM','convertDS', 'convertEX','convertFW','convertLB', 'convertMA', 'convertMI', 'convertOM', 'convertRE','convertTA', 'convertVS'))
 
 #'Report configuration

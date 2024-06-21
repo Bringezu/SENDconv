@@ -22,11 +22,7 @@ convertTA<-function(domainName, domainData) {
  
   out_data<-out_data %>% tibble::add_column(DOMAIN='TA',.before="ARMCD") # add Domain column
   
-  if (full) {
-    names(out_data)<-toupper(names(out_data))
-    return(out_data)
-  } else {
-    out_data<-out_data %>% dplyr::select(-c('Compound',
+  out_data<-out_data %>% dplyr::select(-c('Compound',
                                      'Test Material Amount',
                                      'Route of Administration',
                                      'Administration Route Units',
@@ -36,5 +32,4 @@ convertTA<-function(domainName, domainData) {
                                      'Strain'))
     
     return(out_data)
-  } 
 }

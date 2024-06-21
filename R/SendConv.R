@@ -16,12 +16,13 @@ SendConv<-function(indir, outdir){
   stopifnot(file.exists(indir))
   stopifnot(file.exists(outdir))
   
-  c<-config()
+  domains_to_be_analysed<-config()
   
-  for (i in seq_along(c)) {
-    d<-loadDomain(c$name[i], indir)
-    f<-match.fun(c$run[i])
-    cd<-f(c$name[i], d)
+  for (i in seq_along(domains_to_be_analysed$name)) {
+    print(paste0('Converting: ', domains_to_be_analysed$name[i]))
+    d<-loadDomain(domains_to_be_analysed$name[i], indir)
+    f<-match.fun(domains_to_be_analysed$run[i])
+    cd<-f(domains_to_be_analysed$name[i], d)
     exportDomain(cd,'csv', outdir)
   }
   

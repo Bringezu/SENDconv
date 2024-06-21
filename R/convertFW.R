@@ -13,9 +13,8 @@
 #'
 convertFW<-function(domainName, domainData) {
   stopifnot(is.character(domainName), length(domainName) ==1)
-  SEND_names <-unlist(dictionary %>% dplyr::filter(`Domain Prefix`==domainName) %>% dplyr::select(`Variable Name`))
+  SEND_names <-unlist(dictionary %>% dplyr::filter(`Domain Prefix`=="FW") %>% dplyr::select(`Variable Name`))
   out_data<-tibble::as_tibble(domainData[[1]])
-  SEND_names <-unlist(dictionary %>% filter(`Domain Prefix`==domain) %>% select(`Variable Name`))
   
   names(out_data)[1]<-SEND_names[[1]] # STUDYID
   names(out_data)[2]<-SEND_names[[4]] # POOLID

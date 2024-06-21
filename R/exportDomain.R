@@ -17,7 +17,7 @@ exportDomain<-function(domain, fileformat, outdir){
           'pdf' = {
             grDevices::pdf(paste0('SEND_',domain$DOMAIN %>% unique(),'.pdf'))
             gridExtra::grid.table(domain)
-            dev.off()
+            grDevices::dev.off()
           },
           'csv' = {
             # Encoding(domain)<-'UTF-8'
