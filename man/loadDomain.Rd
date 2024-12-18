@@ -7,7 +7,7 @@
 loadDomain(domain, dir = dir)
 }
 \arguments{
-\item{domain}{A character vector that contains teh acronym for the domain}
+\item{domain}{A character vector that contains the acronym for the domain}
 
 \item{dir}{The directory name containng the input files}
 }
