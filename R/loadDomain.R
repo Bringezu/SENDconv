@@ -13,7 +13,7 @@
 loadDomain <- function(domain, dir=dir){
   if (!methods::hasArg(dir)) {dir<-dir <- dirname(file.choose())}
   stopifnot(is.character(domain), length(domain) ==1)
-  pattern<-paste0('^',domain,".*.csv")
+  pattern<-paste0('^SEND_',domain,"-.*.csv")
   files <- list.files(dir, pattern=pattern,ignore.case = T, full.names=TRUE)
   df <- lapply(files, data.table::fread)
   return(df)
