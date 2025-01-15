@@ -38,7 +38,8 @@ convertBW<-function(domainName, domainData) {
   out_data<-out_data %>% dplyr::mutate(BWTESTCD = ifelse(BWTEST == 'Body Weight', 'BW' , 'TERMBW'))
 
   # copy values from BWORRES to BWORRESN
-  out_data$BWSTRESN<-as.double(out_data$BWORRES)
+  out_data$BWSTRESN<-as.numeric(out_data$BWORRES)
+  out_data$BWSTRESC<-as.numeric(out_data$BWORRES)
 
   # copy values from BWORRESU to BWSTRESU
   out_data$BWSTRESU<-out_data$BWORRESU

@@ -15,6 +15,6 @@ loadDomain <- function(domain, dir=dir){
   stopifnot(is.character(domain), length(domain) ==1)
   pattern<-paste0('^SEND_',domain,"-.*.csv")
   files <- list.files(dir, pattern=pattern,ignore.case = T, full.names=TRUE)
-  df <- lapply(files, data.table::fread)
+  df <- lapply(files, data.table::fread, dec=',')
   return(df)
 }
