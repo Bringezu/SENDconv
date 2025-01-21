@@ -28,7 +28,7 @@ convert_BSAF_BW<-function(domainName, domainData) {
   out_data<-out_data %>% tibble::add_column(DOMAIN='BW',.before="USUBJID") # add Domain column
   out_data<-out_data %>% tibble::add_column(BWTESTCD="",.before="BWTEST") # add BWTESTCD column
   # out_data<-out_data %>% tibble::add_column(BWNOMDY="",.after="BWDY") # add BWNOMDY column
-  out_data<-out_data %>% tibble::add_column(BWSTRESN="",.after="BWORRESU") # add BWSTRESN column
+  out_data<-out_data %>% tibble::add_column(BWSTRESN=0.0,.after="BWORRESU") # add BWSTRESN column
   out_data<-out_data %>% tibble::add_column(BWSTRESU="",.after="BWSTRESN") # add BWSTRESU column
   out_data<-out_data %>% tibble::add_column(BWSTRESC="",.after="BWSTRESU") # add BWSTRESC column
   
@@ -40,7 +40,7 @@ convert_BSAF_BW<-function(domainName, domainData) {
   out_data<-out_data %>% dplyr::mutate(BWTESTCD = ifelse(BWTEST == 'Body Weight', 'BW' , 'TERMBW'))
   
   # copy values from BWORRES to BWORRESN
-  out_data$BWSTRESN<-as.double(out_data$BWORRES)
+  out_data$BWSTRESN<-as.numeric(out_data$BWORRES)
   out_data$BWSTRESC<-as.character(out_data$BWORRES)
   
   # copy values from BWORRESU to BWSTRESU

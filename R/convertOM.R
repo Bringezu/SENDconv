@@ -31,6 +31,11 @@ convertOM<-function(domainName, domainData) {
   # remove unused columns
   out_data<-out_data %>% dplyr::select(-c('Time Slot'))
   
+  
+  #add result in different formats
+  out_data<-out_data %>% dplyr::mutate(OMSTRESC=as.character(OMORRES))
+  out_data<-out_data %>% dplyr::mutate(OMSTRESN=as.numeric(OMORRES))
+  
   # toupper all relevant cols
   out_data$OMSPEC<-toupper(out_data$OMSPEC)
   out_data$OMNOMLBL<-toupper(out_data$OMNOMLBL)
