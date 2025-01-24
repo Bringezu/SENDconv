@@ -5,7 +5,7 @@
 \alias{ct}
 \title{CDISC Controlled terminology}
 \format{
-\subsection{\code{xlsx}}{
+\subsection{\code{csv}}{
 
 A data frame with 13301 rows and 8 columns:
 \describe{

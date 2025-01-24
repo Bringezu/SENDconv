@@ -3,6 +3,8 @@
 #' @param domain SEND Domain compiled by convert function
 #' @param outdir directory name for saving the output files
 #' @param fileformat either csv, or pdf are supported
+#' @export
+#' 
 #' @examples
 #' domain<-'BW'
 #' bw<-convert(domain)
