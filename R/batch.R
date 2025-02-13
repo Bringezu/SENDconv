@@ -7,7 +7,7 @@ indir<-'/opt/provantis/DA/LIVE/'
 outdir<-paste0(indir, 'out/')
 
 # load configuration from environment
-c<-SendConv::config()
+c<-SendConv:::config()
 
 for (i in seq_along(c$run)) {
   d<-loadDomain(c$name[i])
