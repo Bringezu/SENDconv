@@ -8,7 +8,7 @@
 #' @examples
 #' domain<-'BW'
 #' bw<-convert(domain)
-#' exportDomain(bw, 'csv', 'outdir')
+#' exportDomain(bw, 'txt', 'outdir')
 #'
 exportDomain<-function(domain, fileformat, outdir){
   stopifnot(is.data.frame(domain), length(domain) >=1)
@@ -21,7 +21,7 @@ exportDomain<-function(domain, fileformat, outdir){
             gridExtra::grid.table(domain)
             grDevices::dev.off()
           },
-          'csv' = {
+          'txt' = {
             # Encoding(domain)<-'UTF-8'
             #write.table(domain, file=paste0(outdir,'SEND_',name,'.txt'), quote = F, fileEncoding = 'UTF-8', row.names = F, na='', dec='.', sep='\t')
             
