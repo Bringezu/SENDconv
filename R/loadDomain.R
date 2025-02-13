@@ -4,9 +4,6 @@
 #' @param dir The directory name containng the input files
 #'
 #' @return data frame containing the data from the input file
-#' @export
-#' 
-#'
 #' @examples
 #' domain<-'BW'
 #' bw<-loadDomain(domain, dir='/inputdir')
