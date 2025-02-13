@@ -10,7 +10,7 @@
 #' @examples
 #' domain<-'BW'
 #' bw<-loadDomain(domain, dir='/inputdir')
-#'
+#' @export
 loadDomain <- function(domain, dir=dir, pattern=pattern, dec=dec){
   if (!methods::hasArg(domain)) {return('please provide a Domain acronyme, e.g. BW for Bodyweight')} 
   # If no dir was provided, select a  directory 
