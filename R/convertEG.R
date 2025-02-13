@@ -8,22 +8,24 @@
 #'
 #' @examples
 #'  domainName<-'EG'
-#'  domainData<-loadDomain(domainName)
-#'  SEND<-convertMA(domainName, domainData)
+#'  SEND<-convertEG(domainData)
 #'
-convertEG<-function(domainName, domainData) {
-  stopifnot(is.character(domainName), length(domainName) ==1)
-  SEND_names <-unlist(dictionary %>% dplyr::filter(`Domain Prefix`==domainName) %>% dplyr::select(`Variable Name`))
+convertEG<-function(domainData) {
+
+  # load SEND names from Standard
+  SEND_names<-rdSendig('EG')
   out_data<-tibble::as_tibble(domainData[[1]])
-  names(out_data)[1]<-SEND_names[[1]] # STUDYID
-  names(out_data)[2]<-SEND_names[[3]] # USUBJID
-  names(out_data)[3]<-SEND_names[[10]] # EGCAT
-  names(out_data)[4]<-SEND_names[[9]] # EGTEST
-  names(out_data)[5]<-SEND_names[[12]] # EGORRES
-  names(out_data)[6]<-SEND_names[[13]] # EGORRES
-  names(out_data)[7]<-SEND_names[[14]] # EGSTRESC
-  names(out_data)[8]<-SEND_names[[31]] # EGDTC
-  names(out_data)[9]<-SEND_names[[33]] # EGDY
+  
+  
+  names(out_data)[1]<-names(SEND_names[1]) # STUDYID
+  names(out_data)[2]<-names(SEND_names[3]) # USUBJID
+  names(out_data)[3]<-names(SEND_names[10]) # EGCAT
+  names(out_data)[4]<-names(SEND_names[9]) # EGTEST
+  names(out_data)[5]<-names(SEND_names[12]) # EGORRES
+  names(out_data)[6]<-names(SEND_names[13]) # EGORRES
+  names(out_data)[7]<-names(SEND_names[14]) # EGSTRESC
+  names(out_data)[8]<-names(SEND_names[31]) # EGDTC
+  names(out_data)[9]<-names(SEND_names[33]) # EGDY
   
   out_data$USUBJID<-paste0(out_data$STUDYID,"-",out_data$USUBJID) # modify USUBJID
   
@@ -36,6 +38,10 @@ convertEG<-function(domainName, domainData) {
   
   # Set Date Fomat
   out_data$EGDTC<- format(as.POSIXct(out_data$EGDTC,format='%Y/%m/%d %H:%M:%S'))
+  
+  # align names according to standard 
+  out_data<-out_data%>%
+    dplyr::select(dplyr::any_of(names(SEND_names)))
   
   return(out_data)
 }

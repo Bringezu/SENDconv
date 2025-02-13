@@ -5,12 +5,12 @@
 \title{convertCV
 This module converts the Provantis Export for Cardiovascular Data to a SEND like structure leading to a CV Domain.}
 \usage{
-convertCV(domainName, domainData)
+convertCV(domainData)
 }
 \arguments{
-\item{domainName}{A character vector that contains the acronym for the domain}
-
 \item{domainData}{The data frame containing the export of Provantis}
+
+\item{domainName}{A character vector that contains the acronym for the domain}
 }
 \value{
 SEND Converted Domain as data frame

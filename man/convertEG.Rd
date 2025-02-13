@@ -4,12 +4,12 @@
 \alias{convertEG}
 \title{convertEG}
 \usage{
-convertEG(domainName, domainData)
+convertEG(domainData)
 }
 \arguments{
-\item{domainName}{A character vector that contains the acronym for the domain}
-
 \item{domainData}{The data frame containing the export of Provantis}
+
+\item{domainName}{A character vector that contains the acronym for the domain}
 }
 \value{
 SEND Converted Domain as data frame
@@ -19,7 +19,6 @@ convertEG
 }
 \examples{
  domainName<-'EG'
- domainData<-loadDomain(domainName)
- SEND<-convertMA(domainName, domainData)
+ SEND<-convertEG(domainData)
 
 }

@@ -11,24 +11,47 @@
 #'  domainData<-loadDomain(domainName)
 #'  SEND<-convertCL(domainName, domainData)
 #'
-convertCL<-function(domainName, domainData) {
-  stopifnot(is.character(domainName), length(domainName) ==1)
-  SEND_names <-unlist(dictionary %>% dplyr::filter(`Domain Prefix`==domainName) %>% dplyr::select(`Variable Name`))
+convertCL<-function(domainData) {
+  # stopifnot(is.character(domainName), length(domainName) ==1)
+  # load SEND names from Standard
+  SEND_names<-rdSendig('CL')
+  # SEND_names <-unlist(dictionary %>% dplyr::filter(`Domain Prefix`==domainName) %>% dplyr::select(`Variable Name`))
+  
+  
+  ## Step 1: Associate data with SEND Names for CL 
   out_data<-tibble::as_tibble(domainData[[1]])
+  names(out_data)[1]<-names(SEND_names)[1] # STUDYID
+  names(out_data)[2]<-names(SEND_names)[3] # USUBJID
+  names(out_data)[3]<-names(SEND_names)[10] # CLTEST
+  names(out_data)[4]<-names(SEND_names)[13] # CLORRES
+  names(out_data)[6]<-names(SEND_names)[19] # CLLOC
+  names(out_data)[7]<-names(SEND_names[21]) # CLSEV
+  names(out_data)[8]<-names(SEND_names[11]) # CLCAT
+  names(out_data)[10]<-names(SEND_names[26]) # CLDTC
+  names(out_data)[11]<-names(SEND_names[28]) # CLDY
+  names(out_data)[12]<-names(SEND_names[32]) # CLTP  
+
+  ## Step 2a: merge NAD (column 4) with Symptom (column 5) into CLORRES 
+  out_data <- out_data %>% dplyr::mutate(CLORRES = paste0(CLORRES, Symptom))
+  out_data$Symtom<-NULL
+
+  ## Step 2b: merge Modifier (column 4) with Symptom (column 5) into CLORRES 
   
-  names(out_data)[1]<-SEND_names[[1]] # STUDYID
-  names(out_data)[2]<-SEND_names[[3]] # USUBJID
-  names(out_data)[3]<-SEND_names[[10]] # CLTEST
-  names(out_data)[5]<-SEND_names[[14]] # CLORRES
-  names(out_data)[6]<-SEND_names[[19]] # CLLOC
-  #  names(out_data)[7]<-'CLDISTR' # CLDISTR
-  names(out_data)[8]<-SEND_names[[11]] # CLCAT
-  # names(out_data)[9]<-SEND_names[[11]] # CLCAT
-  names(out_data)[7]<-SEND_names[[21]] # CLSEV
-  names(out_data)[10]<-SEND_names[[26]] # CLDTC
-  names(out_data)[11]<-SEND_names[[28]] # CLDY
-  names(out_data)[12]<-SEND_names[[32]] # CLTPT
+  out_data <- out_data %>% dplyr::mutate(CLLOC = paste0(CLLOC, Modifier))
+  out_data$CLLOC<-NULL
   
+    
+  # names(out_data)[3]<-SEND_names[[10]] # CLTEST
+  # names(out_data)[5]<-SEND_names[[14]] # CLORRES
+  # names(out_data)[6]<-SEND_names[[19]] # CLLOC
+  # #  names(out_data)[7]<-'CLDISTR' # CLDISTR
+  # names(out_data)[8]<-SEND_names[[11]] # CLCAT
+  # # names(out_data)[9]<-SEND_names[[11]] # CLCAT
+  # names(out_data)[7]<-SEND_names[[21]] # CLSEV
+  # names(out_data)[10]<-SEND_names[[26]] # CLDTC
+  # names(out_data)[11]<-SEND_names[[28]] # CLDY
+  # names(out_data)[12]<-SEND_names[[32]] # CLTPT
+  # 
   out_data$USUBJID<-paste0(out_data$STUDYID,"-",out_data$USUBJID) # modify USUBJID
   
   out_data<-out_data %>% tibble::add_column(DOMAIN='CL',.before="USUBJID") # add Domain column
@@ -73,14 +96,10 @@ convertCL<-function(domainName, domainData) {
   # Set result as NORMAL when nothing is reported
   out_data<-out_data %>%dplyr:: mutate(CLORRES = replace(CLORRES, CLORRES == '', 'NORMAL'))
   
-  
-  out_data$CLORRES <- toupper(out_data$CLORRES)
-  out_data$CLTEST <- toupper(out_data$CLTEST)
-  out_data$CLTPT <- toupper(out_data$CLTPT)
-  out_data$CLSEV<-toupper(out_data$CLSEV)
+  names(out_data)<-toupper(names(out_data))
   
   # copy values from CLORRES to CLORRESC
-  out_data$CLORRESC<-out_data$CLORRES
+  out_data$CLORRESC<-as.character(out_data$CLORRES)
   
   # copy values from LBNOMDY to BWDY
   out_data$CLNOMDY<-out_data$CLDY
@@ -90,13 +109,9 @@ convertCL<-function(domainName, domainData) {
   # out_data$CLDTC<-strptime(out_data$CLDTC,format='%Y/%m/%d %H:%M:%S')
   out_data$CLDTC<- format(as.POSIXct(out_data$CLDTC,format='%Y/%m/%d %H:%M:%S'))
   
-  
-  # out_data$CLCAT<-''
-  
-  ## remove columns
-  # return conversion result
-  out_data<-out_data %>% dplyr::select(-c('Modifier','NAD'))
-  
+  # align names according to standard 
+  out_data<-out_data%>%
+    dplyr::select(dplyr::any_of(names(SEND_names)))
   return(out_data)
   
 }

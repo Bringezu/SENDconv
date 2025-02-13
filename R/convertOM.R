@@ -8,22 +8,23 @@
 #'
 #' @examples
 #'  domainName<-'OM'
-#'  domainData<-loadDomain(domainName)
-#'  SEND<-convertOM(domainName, domainData)
+#'  SEND<-convertOM(domainData)
 #'
-convertOM<-function(domainName, domainData) {
-  stopifnot(is.character(domainName), length(domainName) ==1)
-  SEND_names <-unlist(dictionary %>% dplyr::filter(`Domain Prefix`==domainName) %>% dplyr::select(`Variable Name`))
+convertOM<-function(domainData) {
+  
+  # load SEND names from Standard
+  SEND_names<-rdSendig('OM')
   out_data<-tibble::as_tibble(domainData[[1]])
-  names(out_data)[1]<-SEND_names[[1]] # STUDYID
-  names(out_data)[2]<-SEND_names[[3]] # USUBJID
-  names(out_data)[3]<-SEND_names[[26]] # Avtivity --> OMNOMLBL 
-  names(out_data)[4]<-SEND_names[[14]] # Parameter --> OMSPEC
-  names(out_data)[5]<-SEND_names[[7]] # Result Value --> OMORRES
-  names(out_data)[6]<-SEND_names[[8]] # Result Unit --> OMORRESU
-  names(out_data)[7]<-SEND_names[[9]] # Textual Value --> OMORRESC
-  names(out_data)[8]<-SEND_names[[23]] # Result Time --> OMDTC
-  names(out_data)[9]<-SEND_names[[24]] # Result Day --> OMDY
+  
+  names(out_data)[1]<-names(SEND_names[1]) # STUDYID
+  names(out_data)[2]<-names(SEND_names[3]) # USUBJID
+  names(out_data)[3]<-names(SEND_names[26]) # Avtivity --> OMNOMLBL 
+  names(out_data)[4]<-names(SEND_names[14]) # Parameter --> OMSPEC
+  names(out_data)[5]<-names(SEND_names[7]) # Result Value --> OMORRES
+  names(out_data)[6]<-names(SEND_names[8]) # Result Unit --> OMORRESU
+  names(out_data)[7]<-names(SEND_names[9]) # Textual Value --> OMORRESC
+  names(out_data)[8]<-names(SEND_names[23]) # Result Time --> OMDTC
+  names(out_data)[9]<-names(SEND_names[24]) # Result Day --> OMDY
   
   out_data<-out_data %>% tibble::add_column(DOMAIN='OM',.before="USUBJID") # add Domain column
   out_data$USUBJID<-paste0(out_data$STUDYID,"-",out_data$USUBJID) # modify USUBJID
@@ -42,6 +43,10 @@ convertOM<-function(domainName, domainData) {
   
   # format date / time
   out_data$OMDTC<- format(as.POSIXct(out_data$OMDTC,format='%Y/%m/%d %H:%M:%S'))
+  
+  # align names according to standard 
+  out_data<-out_data%>%
+    dplyr::select(dplyr::any_of(names(SEND_names)))
   
   return(out_data)
 }

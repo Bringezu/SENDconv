@@ -8,31 +8,29 @@
 #'
 #' @examples
 #'  domainName<-'RE'
-#'  domainData<-loadDomain(domainName)
-#'  SEND<-convertMA(domainName, domainData)
+#'  SEND<-convertMA(domainData)
 #'
-convertRE<-function(domainName, domainData) {
-  stopifnot(is.character(domainName), length(domainName) ==1)
-  SEND_names <-unlist(dictionary %>% dplyr::filter(`Domain Prefix`==domainName) %>% dplyr::select(`Variable Name`))
+convertRE<-function(domainData) {
+  
+  # load SEND names from Standard
+  SEND_names<-rdSendig('RE')
   out_data<-tibble::as_tibble(domainData[[1]])
-  names(out_data)[1]<-SEND_names[[1]] # STUDYID
-  names(out_data)[2]<-SEND_names[[3]] # USUBJID
-  names(out_data)[3]<-SEND_names[[7]] # Avtivity --> RETESTCD
-  names(out_data)[4]<-SEND_names[[8]] # Parameter --> RETEST
-  names(out_data)[5]<-SEND_names[[10]] # Result Value --> REORRES
-  names(out_data)[6]<-SEND_names[[11]] # Result Unit --> REORRESU
-  names(out_data)[7]<-SEND_names[[12]] # Textual Value --> RESTRESC
-  names(out_data)[8]<-SEND_names[[24]] # Result Time --> REDTC
-  names(out_data)[9]<-SEND_names[[26]] # Result Day --> REDY
+  
+  names(out_data)[1]<-names(SEND_names[1]) # STUDYID
+  names(out_data)[2]<-names(SEND_names[3]) # USUBJID
+  names(out_data)[3]<-names(SEND_names[7]) # Avtivity --> RETESTCD
+  names(out_data)[4]<-names(SEND_names[8]) # Parameter --> RETEST
+  names(out_data)[5]<-names(SEND_names[10]) # Result Value --> REORRES
+  names(out_data)[6]<-names(SEND_names[11]) # Result Unit --> REORRESU
+  names(out_data)[7]<-names(SEND_names[12]) # Textual Value --> RESTRESC
+  names(out_data)[8]<-names(SEND_names[24]) # Result Time --> REDTC
+  names(out_data)[9]<-names(SEND_names[26]) # Result Day --> REDY
   
   out_data<-out_data %>% tibble::add_column(DOMAIN='RE',.before="USUBJID") # add Domain column
   out_data<-out_data %>% tibble::add_column(RESTRESN='',.before="REDTC") # add RESTRESN column
   out_data<-out_data %>% tibble::add_column(RESTRESU='',.before="REDTC") # add RESTRESN column
   
   out_data$USUBJID<-paste0(out_data$STUDYID,"-",out_data$USUBJID) # modify USUBJID
-  
-  # remove unused columns
-  out_data<-out_data %>% dplyr::select(-c('Time Slot'))
   
   # capitalize
   out_data$RETESTCD<-toupper(out_data$RETESTCD)
@@ -43,6 +41,10 @@ convertRE<-function(domainName, domainData) {
   
   # format date / time
   out_data$REDTC<- format(as.POSIXct(out_data$REDTC,format='%Y/%m/%d %H:%M:%S'))
+  
+  # align names according to standard 
+  out_data<-out_data%>%
+    dplyr::select(dplyr::any_of(names(SEND_names)))
   
   return(out_data)
 }

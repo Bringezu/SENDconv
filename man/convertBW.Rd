@@ -4,11 +4,9 @@
 \alias{convertBW}
 \title{convertBW}
 \usage{
-convertBW(domainName, domainData)
+convertBW(domainData)
 }
 \arguments{
-\item{domainName}{A character vector that contains the acronym for the domain}
-
 \item{domainData}{The dataframe containing the export of Provantis}
 }
 \value{
@@ -20,6 +18,6 @@ convertBW
 \examples{
  domainName<-'BW'
  domainData<-loadDomain(domainName)
- SEND<-convertBW(domainName, domainData)
+ SEND<-convertBW(domainData)
 
 }

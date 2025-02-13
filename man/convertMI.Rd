@@ -4,12 +4,12 @@
 \alias{convertMI}
 \title{convertMI}
 \usage{
-convertMI(domainName, domainData)
+convertMI(domainData)
 }
 \arguments{
-\item{domainName}{A character vector that contains the acronym for the domain}
-
 \item{domainData}{The data frame containing the export of Provantis}
+
+\item{domainName}{A character vector that contains the acronym for the domain}
 }
 \value{
 SEND Converted Domain as data frame
@@ -20,6 +20,6 @@ convertMI
 \examples{
  domainName<-'MI'
  domainData<-loadDomain(domainName)
- SEND<-convertMA(domainName, domainData)
+ SEND<-convertMI(domainData)
 
 }

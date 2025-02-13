@@ -5,12 +5,12 @@
 \title{convertOM
 This module converts the Provantis Export for Organ Measurements to a SEND like structure leading to a OM Domain.}
 \usage{
-convertOM(domainName, domainData)
+convertOM(domainData)
 }
 \arguments{
-\item{domainName}{A character vector that contains the acronym for the domain}
-
 \item{domainData}{The data frame containing the export of Provantis}
+
+\item{domainName}{A character vector that contains the acronym for the domain}
 }
 \value{
 SEND Converted Domain as dataframe
@@ -21,7 +21,6 @@ This module converts the Provantis Export for Organ Measurements to a SEND like 
 }
 \examples{
  domainName<-'OM'
- domainData<-loadDomain(domainName)
- SEND<-convertOM(domainName, domainData)
+ SEND<-convertOM(domainData)
 
 }

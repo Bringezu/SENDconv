@@ -5,12 +5,12 @@
 \title{convertDS
 This module converts the Provantis Export for Dispostion Data to a SEND like structure leading to a DS Domain.}
 \usage{
-convertDS(domainName, domainData)
+convertDS(domainData)
 }
 \arguments{
-\item{domainName}{A character vector that contains the acronym for the domain}
-
 \item{domainData}{The data frame containing the export of Provantis}
+
+\item{domainName}{A character vector that contains the acronym for the domain}
 }
 \value{
 SEND Converted Domain as data frame
@@ -21,7 +21,6 @@ This module converts the Provantis Export for Dispostion Data to a SEND like str
 }
 \examples{
  domainName<-'DS'
- domainData<-loadDomain(domainName)
- SEND<-convertMA(domainName, domainData)
+ SEND<-convertDS(domainData)
 
 }

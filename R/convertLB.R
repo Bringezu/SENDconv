@@ -8,24 +8,26 @@
 #'
 #' @examples
 #'  domainName<-'LB'
-#'  domainData<-loadDomain(domainName)
-#'  SEND<-convertLB(domainName, domainData)
+#'  SEND<-convertLB(domainData)
 #'
-convertLB<-function(domainName, domainData) {
-  stopifnot(is.character(domainName), length(domainName) ==1)
-  SEND_names <-unlist(dictionary %>% dplyr::filter(`Domain Prefix`==domainName) %>% dplyr::select(`Variable Name`))
+convertLB<-function(domainData) {
+  
+  # load SEND names from Standard
+  SEND_names<-rdSendig('LB')
   out_data<-tibble::as_tibble(domainData[[1]])
-  names(out_data)[1]<-SEND_names[[1]] # STUDYID
-  names(out_data)[2]<-SEND_names[[3]] # USUBJID
-  names(out_data)[3]<-SEND_names[[11]] # LBCAT
-  names(out_data)[4]<-SEND_names[[10]] # LBTEST
-  names(out_data)[5]<-SEND_names[[13]] # LBORRES
-  names(out_data)[6]<-SEND_names[[14]] # LBORRESU
-  names(out_data)[7]<-SEND_names[[17]] # LBSTRESC
-  names(out_data)[8]<-SEND_names[[45]] # LBDTC
-  names(out_data)[9]<-SEND_names[[47]] # LBDY
-  names(out_data)[10]<-SEND_names[[51]] # LBTPT
-  names(out_data)[11]<-SEND_names[[35]] # LBMETHOD
+
+  
+  names(out_data)[1]<-names(SEND_names[1]) # STUDYID
+  names(out_data)[2]<-names(SEND_names[3]) # USUBJID
+  names(out_data)[3]<-names(SEND_names[11]) # LBCAT
+  names(out_data)[4]<-names(SEND_names[10]) # LBTEST
+  names(out_data)[5]<-names(SEND_names[13]) # LBORRES
+  names(out_data)[6]<-names(SEND_names[14]) # LBORRESU
+  names(out_data)[7]<-names(SEND_names[17]) # LBSTRESC
+  names(out_data)[8]<-names(SEND_names[45]) # LBDTC
+  names(out_data)[9]<-names(SEND_names[47]) # LBDY
+  names(out_data)[10]<-names(SEND_names[51]) # LBTPT
+  names(out_data)[11]<-names(SEND_names[35]) # LBMETHOD
   
   
   out_data$USUBJID<-paste0(out_data$STUDYID,"-",out_data$USUBJID) # modify USUBJID
@@ -57,10 +59,10 @@ convertLB<-function(domainName, domainData) {
   # copy values from LBORRES to LBSTRESN
   out_data$LBSTRESN<-as.double(out_data$LBORRES)
   
-  # copy values from LBORRESU to BWSTRESU
+  # copy values from LBORRESU to LBSTRESU
   out_data$LBSTRESU<-out_data$LBORRESU
   
-  # copy values from LBNOMDY to BWDY
+  # copy values from LBNOMDY to LBDY
   out_data$LBNOMDY<-out_data$LBDY
   
   # Set correct date format
@@ -70,5 +72,9 @@ convertLB<-function(domainName, domainData) {
   # Replace Advia 120 with controlled term HEMATOLOGY
   out_data<-out_data %>% dplyr::mutate(LBCAT = replace(LBCAT, LBCAT == 'Advia 2120', 'HEMATOLOGY'))
   
+  
+  # align names according to standard 
+  out_data<-out_data%>%
+    dplyr::select(dplyr::any_of(names(SEND_names)))
   return(out_data)
 }

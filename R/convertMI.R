@@ -9,26 +9,28 @@
 #' @examples
 #'  domainName<-'MI'
 #'  domainData<-loadDomain(domainName)
-#'  SEND<-convertMA(domainName, domainData)
+#'  SEND<-convertMI(domainData)
 #'
-convertMI<-function(domainName, domainData) {
-  stopifnot(is.character(domainName), length(domainName) ==1)
-  SEND_names <-unlist(dictionary %>% dplyr::filter(`Domain Prefix`==domainName) %>% dplyr::select(`Variable Name`))
+convertMI<-function( domainData) {
+
+    # load SEND names from Standard
+  SEND_names<-rdSendig('MI')
+  
   out_data<-tibble::as_tibble(domainData[[1]])
-  names(out_data)[1]<-SEND_names[[1]] # STUDYID
-  names(out_data)[2]<-SEND_names[[3]] # USUBJID
-  names(out_data)[3]<-SEND_names[[12]] # MIORRES
-  names(out_data)[4]<-SEND_names[[20]] # MISPEC
-  names(out_data)[5]<-SEND_names[[17]] # MISTAT
-  names(out_data)[8]<-SEND_names[[13]] # Morphology --> MISTRESC
-  names(out_data)[9]<-SEND_names[[21]] # Locator --> MIANTREG
-  names(out_data)[10]<-SEND_names[[25]] # sub-locator --> MIDIR
-  names(out_data)[13]<-SEND_names[[24]] # Symmetry -> MILAT
-  names(out_data)[14]<-SEND_names[[16]] # MIDISTR
+  names(out_data)[1]<-names(SEND_names[1]) # STUDYID
+  names(out_data)[2]<-names(SEND_names[3]) # USUBJID
+  names(out_data)[3]<-names(SEND_names[12]) # MIORRES
+  names(out_data)[4]<-names(SEND_names[20]) # MISPEC
+  names(out_data)[5]<-names(SEND_names[17]) # MISTAT
+  names(out_data)[8]<-names(SEND_names[13]) # Morphology --> MISTRESC
+  names(out_data)[9]<-names(SEND_names[21]) # Locator --> MIANTREG
+  names(out_data)[10]<-names(SEND_names[25]) # sub-locator --> MIDIR
+  names(out_data)[13]<-names(SEND_names[24]) # Symmetry -> MILAT
+  names(out_data)[14]<-names(SEND_names[16]) # MIDISTR
   # names(out_data)[15]<-SEND_names[[16]] # Qualifier --> ??
-  names(out_data)[16]<-SEND_names[[28]] # MISEV
-  names(out_data)[17]<-SEND_names[[30]] # MIDTC
-  names(out_data)[18]<-SEND_names[[31]] # MIDY
+  names(out_data)[16]<-names(SEND_names[28]) # MISEV
+  names(out_data)[17]<-names(SEND_names[30]) # MIDTC
+  names(out_data)[18]<-names(SEND_names[31]) # MIDY
   
   out_data<-out_data %>% tibble::add_column(DOMAIN='MI',.before="USUBJID") # add Domain column
   
@@ -61,6 +63,11 @@ convertMI<-function(domainName, domainData) {
   out_data$MISTAT<-toupper(out_data$MISTAT)
   out_data$MIDIR<-toupper(out_data$MIDIR)
   out_data$MIDTC<- format(as.POSIXct(out_data$MIDTC,format='%Y/%m/%d %H:%M:%S'))
+  
+  
+  # align names according to standard 
+  out_data<-out_data%>%
+    dplyr::select(dplyr::any_of(names(SEND_names)))
   
   return(out_data)
 }

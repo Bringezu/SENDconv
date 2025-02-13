@@ -5,12 +5,12 @@
 \title{convertTA
 This module converts the Provantis Export for Test Amount to a SEND like structure leading to a TA Domain.}
 \usage{
-convertTA(domainName, domainData)
+convertTA(domainData)
 }
 \arguments{
-\item{domainName}{A character vector that contains the acronym for the domain}
-
 \item{domainData}{The data frame containing the export of Provantis}
+
+\item{domainName}{A character vector that contains the acronym for the domain}
 }
 \value{
 SEND Converted Domain as data frame
@@ -20,8 +20,6 @@ convertTA
 This module converts the Provantis Export for Test Amount to a SEND like structure leading to a TA Domain.
 }
 \examples{
- domainName<-'TA'
- domainData<-loadDomain(domainName)
- SEND<-convertMA(domainName, domainData)
+ SEND<-convertTA( domainData)
 
 }

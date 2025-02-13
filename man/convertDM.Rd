@@ -5,12 +5,12 @@
 \title{convertDM
 This module converts the Provantis Export for Demographics to a SEND like structure leading to a DM Domain.}
 \usage{
-convertDM(domainName, domainData)
+convertDM(domainData)
 }
 \arguments{
-\item{domainName}{A character vector that contains the acronym for the domain}
+\item{domainData}{The data frame containing the csv export of Provantis}
 
-\item{domainData}{The data frame containing the export of Provantis}
+\item{domainName}{A character vector that contains the acronym for the domain}
 }
 \value{
 SEND Converted Domain as data frame
@@ -20,8 +20,6 @@ convertDM
 This module converts the Provantis Export for Demographics to a SEND like structure leading to a DM Domain.
 }
 \examples{
- domainName<-'DM'
- domainData<-loadDomain(domainName)
- SEND<-convertMA(domainName, domainData)
+ SEND<-convertDM(domainData)
 
 }

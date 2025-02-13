@@ -5,12 +5,12 @@
 \title{convertRE
 This module converts the Provantis Export for Respiratory Data to a SEND like structure leading to a RE Domain.}
 \usage{
-convertRE(domainName, domainData)
+convertRE(domainData)
 }
 \arguments{
-\item{domainName}{A character vector that contains the acronym for the domain}
-
 \item{domainData}{The data frame containing the export of Provantis}
+
+\item{domainName}{A character vector that contains the acronym for the domain}
 }
 \value{
 SEND Converted Domain as data frame
@@ -21,7 +21,6 @@ This module converts the Provantis Export for Respiratory Data to a SEND like st
 }
 \examples{
  domainName<-'RE'
- domainData<-loadDomain(domainName)
- SEND<-convertMA(domainName, domainData)
+ SEND<-convertMA(domainData)
 
 }

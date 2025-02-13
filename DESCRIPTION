@@ -1,5 +1,5 @@
 Package: SendConv
-Title: This Package creates SEND structured data from Provantis export files. 
+Title: This Package creates SEND structured data from Provantis export files 
 Version: 0.0.0.9000
 Authors@R: 
     person("Frank", "Bringezu", , "frank.bringezu@merckgroup.com", role = c("aut", "cre"),

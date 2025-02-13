@@ -8,23 +8,24 @@
 #'
 #' @examples
 #'  domainName<-'FW'
-#'  domainData<-loadDomain(domainName)
-#'  SEND<-convertFW(domainName, domainData)
+#'  SEND<-convertFW(domainData)
 #'
-convertFW<-function(domainName, domainData) {
-  stopifnot(is.character(domainName), length(domainName) ==1)
-  SEND_names <-unlist(dictionary %>% dplyr::filter(`Domain Prefix`=="FW") %>% dplyr::select(`Variable Name`))
-  out_data<-tibble::as_tibble(domainData[[1]])
+convertFW<-function(domainData) {
   
-  names(out_data)[1]<-SEND_names[[1]] # STUDYID
-  names(out_data)[2]<-SEND_names[[4]] # POOLID
-  names(out_data)[3]<-SEND_names[[8]] # FWTEST
-  names(out_data)[4]<-SEND_names[[7]] # FWTESTCD
-  names(out_data)[5]<-SEND_names[[18]] # FWDTC
-  names(out_data)[6]<-SEND_names[[20]] # FWDY
-  names(out_data)[7]<-SEND_names[[9]] # FWORRES
-  names(out_data)[8]<-SEND_names[[10]] # FWORRESU
-  #names(out_data)[9]<-SEND_names[[33]] # EGDY
+  # load SEND names from Standard
+  SEND_names<-rdSendig('FW')
+  out_data<-tibble::as_tibble(domainData[[1]])
+
+  
+  names(out_data)[1]<-names(SEND_names[1]) # STUDYID
+  names(out_data)[2]<-names(SEND_names[4]) # POOLID
+  names(out_data)[3]<-names(SEND_names[8]) # FWTEST
+  names(out_data)[4]<-names(SEND_names[7]) # FWTESTCD
+  names(out_data)[5]<-names(SEND_names[18]) # FWDTC
+  names(out_data)[6]<-names(SEND_names[20]) # FWDY
+  names(out_data)[7]<-names(SEND_names[9]) # FWORRES
+  names(out_data)[8]<-names(SEND_names[10]) # FWORRESU
+  
   
   # out_data$USUBJID<-paste0(out_data$STUDYID,"-",out_data$USUBJID) # modify USUBJID
   
@@ -41,6 +42,11 @@ convertFW<-function(domainName, domainData) {
   
   # Set Date Fomat
   out_data$FWDTC<- format(as.POSIXct(out_data$FWDTC,format='%Y/%m/%d %H:%M:%S'))
+  
+  
+  # align names according to standard 
+  out_data<-out_data%>%
+    dplyr::select(dplyr::any_of(names(SEND_names)))
   
   return(out_data)
   

@@ -5,12 +5,12 @@
 \title{convertVS
 This module converts the Provantis Export for Vital Signs to a SEND like structure leading to a VS Domain.}
 \usage{
-convertVS(domainName, domainData)
+convertVS(domainData)
 }
 \arguments{
-\item{domainName}{A character vector that contains the acronym for the domain}
-
 \item{domainData}{The data frame containing the export of Provantis}
+
+\item{domainName}{A character vector that contains the acronym for the domain}
 }
 \value{
 SEND Converted Domain as data frame
@@ -20,8 +20,6 @@ convertVS
 This module converts the Provantis Export for Vital Signs to a SEND like structure leading to a VS Domain.
 }
 \examples{
- domainName<-'VS'
- domainData<-loadDomain(domainName)
- SEND<-convertMA(domainName, domainData)
+ SEND<-convertVS(domainData)
 
 }

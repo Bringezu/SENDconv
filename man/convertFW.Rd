@@ -4,12 +4,12 @@
 \alias{convertFW}
 \title{convertFW}
 \usage{
-convertFW(domainName, domainData)
+convertFW(domainData)
 }
 \arguments{
-\item{domainName}{A character vector that contains the acronym for the domain}
-
 \item{domainData}{The data frame containing the export of Provantis}
+
+\item{domainName}{A character vector that contains the acronym for the domain}
 }
 \value{
 SEND Converted Domain as dataframe
@@ -19,7 +19,6 @@ convertFW
 }
 \examples{
  domainName<-'FW'
- domainData<-loadDomain(domainName)
- SEND<-convertFW(domainName, domainData)
+ SEND<-convertFW(domainData)
 
 }

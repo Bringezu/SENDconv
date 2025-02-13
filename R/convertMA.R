@@ -8,28 +8,30 @@
 #'
 #' @examples
 #'  domainName<-'MA'
-#'  domainData<-loadDomain(domainName)
-#'  SEND<-convertMA(domainName, domainData)
+#'  SEND<-convertMA(domainData)
 #'
-convertMA<-function(domainName, domainData) {
-  stopifnot(is.character(domainName), length(domainName) ==1)
-  SEND_names <-unlist(dictionary %>% dplyr::filter(`Domain Prefix`==domainName) %>% dplyr::select(`Variable Name`))
+convertMA<-function(domainData) {
+  
+  # load SEND names from Standard
+  SEND_names<-rdSendig('MA')
   out_data<-tibble::as_tibble(domainData[[1]])
-  names(out_data)[1]<-SEND_names[[1]] # STUDYID
-  names(out_data)[2]<-SEND_names[[3]] # USUBJID
-  names(out_data)[3]<-SEND_names[[17]] # MASPEC
-  names(out_data)[4]<-SEND_names[[14]] # MASTAT
-  names(out_data)[6]<-SEND_names[[12]] # MAORRES
+  
+  
+  names(out_data)[1]<-names(SEND_names[1]) # STUDYID
+  names(out_data)[2]<-names(SEND_names[3]) # USUBJID
+  names(out_data)[3]<-names(SEND_names[17]) # MASPEC
+  names(out_data)[4]<-names(SEND_names[14]) # MASTAT
+  names(out_data)[6]<-names(SEND_names[12]) # MAORRES
   # names(out_data)76]<-SEND_names[[]] # NVL--> MAORRES
-  names(out_data)[8]<-SEND_names[[13]] # MASTRESC
+  names(out_data)[8]<-names(SEND_names[13]) # MASTRESC
   # names(out_data)[9]<-SEND_names[[18]] # QUALIFIER --> MAANTREG
-  names(out_data)[10]<-SEND_names[[18]] # MAANTREG
-  names(out_data)[11]<-SEND_names[[22]] # Sub-Locator --> MADIR 
-  names(out_data)[12]<-SEND_names[[21]] # MALAT
+  names(out_data)[10]<-names(SEND_names[18]) # MAANTREG
+  names(out_data)[11]<-names(SEND_names[22]) # Sub-Locator --> MADIR 
+  names(out_data)[12]<-names(SEND_names[21]) # MALAT
   # names(out_data)[13]<-SEND_names[[18]] # Distribution --> MAANTREG
-  names(out_data)[14]<-SEND_names[[25]] # MASEV
-  names(out_data)[18]<-SEND_names[[27]] # MADTC
-  names(out_data)[19]<-SEND_names[[28]] # MADY
+  names(out_data)[14]<-names(SEND_names[25]) # MASEV
+  names(out_data)[18]<-names(SEND_names[27]) # MADTC
+  names(out_data)[19]<-names(SEND_names[28]) # MADY
   
   out_data<-out_data %>% tibble::add_column(DOMAIN='MA',.before="USUBJID") # add Domain column
   
@@ -46,10 +48,7 @@ convertMA<-function(domainName, domainData) {
   
   out_data<-out_data %>% dplyr::mutate(MALAT = ifelse(MADIR=='right', MADIR, MALAT))
   out_data<-out_data %>% dplyr::mutate(MADIR = replace(MADIR, MADIR == "right", ""))
-  
-  # remove unused columns
-  out_data<-out_data %>% dplyr::select(-c('NVL','Tissue NE Reason','Cause of Death','Qualifier','Distribution','Associated Observations','Associated Masses'))
-  
+  out_data<-out_data %>% dplyr::mutate(MASTRESC = ifelse(MAORRES == 'NO VISIBLE LESIONS', 'UNREMARKABLE', MASTRESC))
   
   # copy values from CVNOMDY to CVDY
   out_data$MANOMDY<-out_data$MADY
@@ -64,8 +63,15 @@ convertMA<-function(domainName, domainData) {
   out_data$MAANTREG<-toupper(out_data$MAANTREG)
   out_data$MADIR<-toupper(out_data$MADIR)
   
+  
+  
   # Set Date Fomat
   out_data$MADTC<- format(as.POSIXct(out_data$MADTC,format='%Y/%m/%d %H:%M:%S'))
+  
+  
+  # align names according to standard 
+  out_data<-out_data%>%
+    dplyr::select(dplyr::any_of(names(SEND_names)))
   
   return(out_data)
 }

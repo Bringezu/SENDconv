@@ -4,12 +4,12 @@
 \alias{convertMA}
 \title{convertMA}
 \usage{
-convertMA(domainName, domainData)
+convertMA(domainData)
 }
 \arguments{
-\item{domainName}{A character vector that contains the acronym for the domain}
-
 \item{domainData}{The data frame containing the export of Provantis}
+
+\item{domainName}{A character vector that contains the acronym for the domain}
 }
 \value{
 SEND Converted Domain as dataframe
@@ -19,7 +19,6 @@ convertMA
 }
 \examples{
  domainName<-'MA'
- domainData<-loadDomain(domainName)
- SEND<-convertMA(domainName, domainData)
+ SEND<-convertMA(domainData)
 
 }
