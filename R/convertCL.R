@@ -30,7 +30,7 @@ convertCL<-function(domainData) {
   names(out_data)[12]<-names(SEND_names[32]) # CLTP  
 
   # remove empty cells
-  out_data[] <- lapply(out_data, make.true.NA)
+  out_data[] <- lapply(out_data, SendConv::make.true.NA)
   
   ## Step 2a: merge NAD (column 4) with Symptom (column 5) into CLORRES 
   out_data<- out_data %>% dplyr::mutate(CLORRES = ifelse(NAD))

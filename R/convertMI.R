@@ -17,20 +17,20 @@ convertMI<-function( domainData) {
   SEND_names<-rdSendig('MI')
   
   out_data<-tibble::as_tibble(domainData[[1]])
-  names(out_data)[1]<-names(SEND_names[1]) # STUDYID
-  names(out_data)[2]<-names(SEND_names[3]) # USUBJID
-  names(out_data)[3]<-names(SEND_names[12]) # MIORRES
-  names(out_data)[4]<-names(SEND_names[20]) # MISPEC
-  names(out_data)[5]<-names(SEND_names[17]) # MISTAT
-  names(out_data)[8]<-names(SEND_names[13]) # Morphology --> MISTRESC
-  names(out_data)[9]<-names(SEND_names[21]) # Locator --> MIANTREG
-  names(out_data)[10]<-names(SEND_names[25]) # sub-locator --> MIDIR
-  names(out_data)[13]<-names(SEND_names[24]) # Symmetry -> MILAT
-  names(out_data)[14]<-names(SEND_names[16]) # MIDISTR
+  names(out_data)[1]<-names(SEND_names)[1] # STUDYID
+  names(out_data)[2]<-names(SEND_names)[3] # USUBJID
+  names(out_data)[3]<-names(SEND_names)[12] # MIORRES
+  names(out_data)[4]<-names(SEND_names)[20] # MISPEC
+  names(out_data)[5]<-names(SEND_names)[17] # MISTAT
+  names(out_data)[8]<-names(SEND_names)[13] # Morphology --> MISTRESC
+  names(out_data)[9]<-names(SEND_names)[21] # Locator --> MIANTREG
+  names(out_data)[10]<-names(SEND_names)[25] # sub-locator --> MIDIR
+  names(out_data)[13]<-names(SEND_names)[24] # Symmetry -> MILAT
+  names(out_data)[14]<-names(SEND_names)[16] # MIDISTR
   # names(out_data)[15]<-SEND_names[[16]] # Qualifier --> ??
-  names(out_data)[16]<-names(SEND_names[28]) # MISEV
-  names(out_data)[17]<-names(SEND_names[30]) # MIDTC
-  names(out_data)[18]<-names(SEND_names[31]) # MIDY
+  names(out_data)[16]<-names(SEND_names)[28] # MISEV
+  names(out_data)[17]<-names(SEND_names)[30] # MIDTC
+  names(out_data)[18]<-names(SEND_names)[31] # MIDY
   
   out_data<-out_data %>% tibble::add_column(DOMAIN='MI',.before="USUBJID") # add Domain column
   
