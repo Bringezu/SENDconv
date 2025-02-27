@@ -19,6 +19,6 @@ exportDomain
 \examples{
 domain<-'BW'
 bw<-convert(domain)
-exportDomain(bw, 'csv', 'outdir')
+exportDomain(bw, 'txt', 'outdir')
 
 }

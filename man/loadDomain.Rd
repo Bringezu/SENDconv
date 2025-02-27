@@ -4,7 +4,7 @@
 \alias{loadDomain}
 \title{loadDomain}
 \usage{
-loadDomain(domain, dir = dir)
+loadDomain(domain, dir = dir, pattern = pattern, dec = dec)
 }
 \arguments{
 \item{domain}{A character vector that contains the acronym for the domain}
@@ -20,5 +20,4 @@ loadDomain
 \examples{
 domain<-'BW'
 bw<-loadDomain(domain, dir='/inputdir')
-
 }

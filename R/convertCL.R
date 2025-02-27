@@ -12,18 +12,16 @@
 #'  SEND<-convertCL(domainName, domainData)
 #'
 convertCL<-function(domainData) {
-  # stopifnot(is.character(domainName), length(domainName) ==1)
-  # load SEND names from Standard
-  SEND_names<-rdSendig('CL')
-  # SEND_names <-unlist(dictionary %>% dplyr::filter(`Domain Prefix`==domainName) %>% dplyr::select(`Variable Name`))
   
+  
+  SEND_names<-rdSendig('CL')
   
   ## Step 1: Associate data with SEND Names for CL 
   out_data<-tibble::as_tibble(domainData[[1]])
   names(out_data)[1]<-names(SEND_names)[1] # STUDYID
   names(out_data)[2]<-names(SEND_names)[3] # USUBJID
   names(out_data)[3]<-names(SEND_names)[10] # CLTEST
-  names(out_data)[4]<-names(SEND_names)[13] # CLORRES
+  names(out_data)[5]<-names(SEND_names)[14] # CLORRES
   names(out_data)[6]<-names(SEND_names)[19] # CLLOC
   names(out_data)[7]<-names(SEND_names[21]) # CLSEV
   names(out_data)[8]<-names(SEND_names[11]) # CLCAT
@@ -31,27 +29,19 @@ convertCL<-function(domainData) {
   names(out_data)[11]<-names(SEND_names[28]) # CLDY
   names(out_data)[12]<-names(SEND_names[32]) # CLTP  
 
+  # remove empty cells
+  out_data[] <- lapply(out_data, make.true.NA)
+  
   ## Step 2a: merge NAD (column 4) with Symptom (column 5) into CLORRES 
-  out_data <- out_data %>% dplyr::mutate(CLORRES = paste0(CLORRES, Symptom))
-  out_data$Symtom<-NULL
-
+  out_data<- out_data %>% dplyr::mutate(CLORRES = ifelse(NAD))
+  
+  
   ## Step 2b: merge Modifier (column 4) with Symptom (column 5) into CLORRES 
   
   out_data <- out_data %>% dplyr::mutate(CLLOC = paste0(CLLOC, Modifier))
-  out_data$CLLOC<-NULL
   
     
-  # names(out_data)[3]<-SEND_names[[10]] # CLTEST
-  # names(out_data)[5]<-SEND_names[[14]] # CLORRES
-  # names(out_data)[6]<-SEND_names[[19]] # CLLOC
-  # #  names(out_data)[7]<-'CLDISTR' # CLDISTR
-  # names(out_data)[8]<-SEND_names[[11]] # CLCAT
-  # # names(out_data)[9]<-SEND_names[[11]] # CLCAT
-  # names(out_data)[7]<-SEND_names[[21]] # CLSEV
-  # names(out_data)[10]<-SEND_names[[26]] # CLDTC
-  # names(out_data)[11]<-SEND_names[[28]] # CLDY
-  # names(out_data)[12]<-SEND_names[[32]] # CLTPT
-  # 
+ 
   out_data$USUBJID<-paste0(out_data$STUDYID,"-",out_data$USUBJID) # modify USUBJID
   
   out_data<-out_data %>% tibble::add_column(DOMAIN='CL',.before="USUBJID") # add Domain column

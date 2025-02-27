@@ -16,3 +16,9 @@ set_conf<-function(conf=tibble()){
   the$conf<-conf
   invisible(old)
 }
+
+#'Remove empty cells and put NA inside
+#'@export
+make.true.NA <- function(x) if(is.character(x)||is.factor(x)){
+  is.na(x) <- x %in% c("NA", "<NA>",""); x} else {
+    x}
