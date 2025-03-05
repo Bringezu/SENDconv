@@ -17,14 +17,14 @@ convertFW<-function(domainData) {
   out_data<-tibble::as_tibble(domainData[[1]])
 
   
-  names(out_data)[1]<-names(SEND_names[1]) # STUDYID
-  names(out_data)[2]<-names(SEND_names[4]) # POOLID
-  names(out_data)[3]<-names(SEND_names[8]) # FWTEST
-  names(out_data)[4]<-names(SEND_names[7]) # FWTESTCD
-  names(out_data)[5]<-names(SEND_names[18]) # FWDTC
-  names(out_data)[6]<-names(SEND_names[20]) # FWDY
-  names(out_data)[7]<-names(SEND_names[9]) # FWORRES
-  names(out_data)[8]<-names(SEND_names[10]) # FWORRESU
+  names(out_data)[1]<-names(SEND_names)[1] # STUDYID
+  names(out_data)[2]<-names(SEND_names)[4] # POOLID
+  names(out_data)[3]<-names(SEND_names)[8] # FWTEST
+  names(out_data)[4]<-names(SEND_names)[7] # FWTESTCD
+  names(out_data)[5]<-names(SEND_names)[18] # FWDTC
+  names(out_data)[6]<-names(SEND_names)[20] # FWDY
+  names(out_data)[7]<-names(SEND_names)[9] # FWORRES
+  names(out_data)[8]<-names(SEND_names)[10] # FWORRESU
   
   
   # out_data$USUBJID<-paste0(out_data$STUDYID,"-",out_data$USUBJID) # modify USUBJID
