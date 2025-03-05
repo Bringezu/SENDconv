@@ -36,7 +36,9 @@ for (i in seq_along(c$run)) {
   exportDomain(dd, 'txt', outdir)
 }
 
-# Close the log
-logr::log_close() 
+
 
 }
+
+# Close the log
+logr::log_close() 
