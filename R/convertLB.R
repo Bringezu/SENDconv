@@ -53,7 +53,7 @@ convertLB<-function(domainData) {
   
   
   
-  out_data<-out_data %>%dplyr:: mutate(LBCAT = ifelse(LBCAT %ni% c('CLINICAL CHEMISTRY','HEMATOLOGY','URINALYSIS','IPT'), 'SPECIAL PURPOSE', LBCAT) )
+  out_data<-out_data %>%dplyr:: mutate(LBCAT = ifelse(LBCAT %ni% c('CLINICAL CHEMISTRY','HEMATOLOGY','URINALYSIS','IPT'), 'SPECIAL PURPOSE', LBCAT))
   
   # copy values from LBORRES to LBSTRESN
   out_data$LBSTRESN<-as.double(out_data$LBORRES)
@@ -69,7 +69,7 @@ convertLB<-function(domainData) {
   
   
   # Replace Advia 120 with controlled term HEMATOLOGY
-  out_data<-out_data %>% dplyr::mutate(LBCAT = replace(LBCAT, LBCAT == 'Advia 2120', 'HEMATOLOGY'))
+  out_data<-out_data %>% dplyr::mutate(LBCAT = ifelse(LBCAT == 'Advia 2120', 'HEMATOLOGY', LBCAT))
   
   
   # align names according to standard 

@@ -46,7 +46,7 @@ convertCL<-function(domainData) {
   out_data<-out_data %>% tibble::add_column(CLTESTCD="",.before="CLTEST") # add CLTESTCD column
   out_data<-out_data %>% tibble::add_column(CLNOMDY="",.after="CLDY") # add CLNOMDY column
   
-  out_data <- out_data %>% dplyr::mutate(CLORRES = ifelse(CLCAT=='Color', paste(c(CLORRES, Modifier, collapse = ", "), '')))
+  out_data <- out_data %>% dplyr::mutate(CLORRES = ifelse(CLCAT=='Color', paste(c(CLORRES, Modifier, collapse = ", ")), ' '))
   
   out_data$CLSEV<-gsub('\\.$', '', out_data$CLSEV)
   
@@ -57,8 +57,8 @@ convertCL<-function(domainData) {
   
   
   out_data$CLORRES<-gsub(',$', '', out_data$CLORRES)
-  out_data <- out_data %>% dplyr::mutate(CLSEV = ifelse(CLCAT=='Severity',Modifier, ''))
-  out_data <- out_data %>% dplyr::mutate(CLLOC = ifelse(CLCAT=='Laterality',Modifier, ''))
+  out_data <- out_data %>% dplyr::mutate(CLSEV = ifelse(CLCAT=='Severity',Modifier, ' '))
+  out_data <- out_data %>% dplyr::mutate(CLLOC = ifelse(CLCAT=='Laterality',Modifier, ' '))
   
   out_data$CLSEV<-gsub('slight\\.', 'SLIGHT', out_data$CLSEV)
   out_data$CLSEV<-gsub('medium\\.', 'MEDIUM', out_data$CLSEV)
