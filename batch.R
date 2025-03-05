@@ -14,20 +14,29 @@ indir<-c('/opt/provantis/DA/LIVE/', '/opt/provantis/DA/ARCH/','/opt/provantis/IV
 
 
 # indir<-'c:/temp/MQUEST_SEND/Provantis/DA/LIVE/'
+# Open the log
+log_open("messages.log")
 
-for (i in seq_along(indir)) {
-  
+for (j in seq_along(indir)) {
 
 # outdir target directory for storing the SEND files
-outdir<-paste0(indir[i], 'output/')
+outdir<-paste0(indir[j], 'output/')
 
 # load configuration from local project environment
 c<-config()
 
 for (i in seq_along(c$run)) {
-  d<-loadDomain(c$name[i], indir[i])
+  d<-loadDomain(c$name[i], indir[j])
+  
+  # Print text to the log
+  log_print(paste0("Processing ", c$name[i], 'from ', indir[j]))
+  
+
   dd<-get(paste0(c$run[i]))(d)
   exportDomain(dd, 'txt', outdir)
 }
+
+# Close the log
+log_close() 
 
 }
