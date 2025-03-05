@@ -51,10 +51,9 @@ convertLB<-function(domainData) {
   
   `%ni%` <- Negate(`%in%`)
   
-  cindex<-which(out_data$LBCAT %ni% c('CLINICAL CHEMISTRY','HEMATOLOGY','URINALYSIS','IPT'))
-  for (i in seq_along(cindex)) {
-    out_data$LBCAT[cindex[i]]<-'SPECIAL PURPOSE'
-  }
+  
+  
+  out_data<-out_data %>%dplyr:: mutate(LBCAT = ifelse(LBCAT %ni% c('CLINICAL CHEMISTRY','HEMATOLOGY','URINALYSIS','IPT'), 'SPECIAL PURPOSE', LBCAT) )
   
   # copy values from LBORRES to LBSTRESN
   out_data$LBSTRESN<-as.double(out_data$LBORRES)

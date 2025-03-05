@@ -39,19 +39,14 @@ convertCL<-function(domainData) {
   ## Step 2b: merge Modifier (column 4) with Symptom (column 5) into CLORRES 
   
   out_data <- out_data %>% dplyr::mutate(CLLOC = paste0(CLLOC, Modifier))
-  
-    
- 
+
   out_data$USUBJID<-paste0(out_data$STUDYID,"-",out_data$USUBJID) # modify USUBJID
   
   out_data<-out_data %>% tibble::add_column(DOMAIN='CL',.before="USUBJID") # add Domain column
   out_data<-out_data %>% tibble::add_column(CLTESTCD="",.before="CLTEST") # add CLTESTCD column
   out_data<-out_data %>% tibble::add_column(CLNOMDY="",.after="CLDY") # add CLNOMDY column
   
-  cindex<-which(out_data$CLCAT=='Color')
-  for (i in seq_along(cindex)) {
-    out_data$CLORRES[cindex[i]]<-paste(c(out_data$CLORRES[cindex[i]], out_data$Modifier[cindex[i]]), collapse = ", ")
-    }
+  out_data <- out_data %>% dplyr::mutate(CLORRES = ifelse(CLCAT=='Color', paste(c(CLORRES, Modifier, collapse = ", "), '')))
   
   out_data$CLSEV<-gsub('\\.$', '', out_data$CLSEV)
   
