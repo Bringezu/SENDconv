@@ -15,7 +15,7 @@ indir<-c('/opt/provantis/DA/LIVE/', '/opt/provantis/DA/ARCH/','/opt/provantis/IV
 
 # indir<-'c:/temp/MQUEST_SEND/Provantis/DA/LIVE/'
 # Open the log
-log_open("messages.log")
+logr::log_open("messages.log")
 
 for (j in seq_along(indir)) {
 
@@ -29,7 +29,7 @@ for (i in seq_along(c$run)) {
   d<-loadDomain(c$name[i], indir[j])
   
   # Print text to the log
-  log_print(paste0("Processing ", c$name[i], 'from ', indir[j]))
+  logr::log_print(paste0("Processing ", c$name[i], 'from ', indir[j]))
   
 
   dd<-get(paste0(c$run[i]))(d)
@@ -37,6 +37,6 @@ for (i in seq_along(c$run)) {
 }
 
 # Close the log
-log_close() 
+logr::log_close() 
 
 }
