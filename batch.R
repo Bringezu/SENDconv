@@ -27,11 +27,11 @@ c<-config()
 
 for (i in seq_along(c$run)) {
   d<-loadDomain(c$name[i], indir[j])
-  
+  if (length(d) != 1) (next(i))
   # Print text to the log
   logr::log_print(paste0("Processing ", c$name[i], 'from ', indir[j]))
   
-
+ 
   dd<-get(paste0(c$run[i]))(d)
   exportDomain(dd, 'txt', outdir)
 }
