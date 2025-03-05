@@ -57,23 +57,13 @@ convertCL<-function(domainData) {
   
   `%ni%` <- Negate(`%in%`)
   
-  cindex<-which(out_data$CLSEV %ni% c('slight','moderate','severe'))
-  for (i in seq_along(cindex)) {
-    out_data$CLORRES[cindex[i]]<-paste0(out_data$CLORRES[cindex[i]],',',out_data$CLSEV[cindex[i]])
-    out_data$CLSEV[cindex[i]]<-''
-  }
+  out_data <- out_data %>% dplyr::mutate(CLORRES = ifelse(CLSEV %ni% c('slight','moderate','severe'),paste0(CLORRES,', ',CLSEV), CLORRES))
+  out_data <- out_data %>% dplyr::mutate(CLSEV = ifelse(CLSEV %ni% c('slight','moderate','severe'),'', CLSEV))
+  
   
   out_data$CLORRES<-gsub(',$', '', out_data$CLORRES)
-  
-  cindex<-which(out_data$CLCAT=='Severity')
-  for (i in seq_along(cindex)) {
-    out_data$CLSEV[cindex[i]]<-out_data$Modifier[cindex[i]]
-    }
-  
-  # out_data$CLLOC<-''
-  cindex<-which(out_data$CLCAT=='Laterality')
-  for (i in seq_along(cindex)) {out_data$CLLOC[cindex[i]]<-out_data$Modifier[cindex[i]]}
-  out_data$CLLOC[out_data$CLLOC == 'lighter'] <- ''
+  out_data <- out_data %>% dplyr::mutate(CLSEV = ifelse(CLCAT=='Severity',Modifier, ''))
+  out_data <- out_data %>% dplyr::mutate(CLLOC = ifelse(CLCAT=='Laterality',Modifier, ''))
   
   out_data$CLSEV<-gsub('slight\\.', 'SLIGHT', out_data$CLSEV)
   out_data$CLSEV<-gsub('medium\\.', 'MEDIUM', out_data$CLSEV)
