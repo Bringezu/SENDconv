@@ -34,7 +34,7 @@ convertFW<-function(domainData) {
   out_data<-out_data %>% dplyr::mutate(FWORRES=ifelse(is.na(FWORRES), 'Food Residue',FWORRES ))
   out_data<-out_data %>% dplyr::mutate(FWORRESU=ifelse(FWORRESU=="", 'Units (Residue)', FWORRESU))
   
-  out_data<-out_data %>% dplyr::mutate(FWSTRESN = as.numeric(out_data$FWORRES), FWSTRESU = FWORRESU)
+  out_data<-out_data %>% dplyr::mutate(FWSTRESN = suppressWarnings(as.numeric(out_data$FWORRES), FWSTRESU = FWORRESU))
   out_data<-out_data %>% dplyr::mutate(FWSTRESC = as.character(out_data$FWORRES))
   
  
