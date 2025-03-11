@@ -28,7 +28,7 @@ loadDomain <- function(domain, dir=dir, pattern=pattern, dec=dec){
   files <- list.files(dir,pattern=pattern,ignore.case = T, full.names=TRUE) %>% 
     file.info() %>%
     tibble::rownames_to_column() %>% 
-    filter(as.Date(ctime) > Sys.Date()-max_day)
+    dplyr::filter(as.Date(ctime) > Sys.Date()-max_day)
   
   df <- lapply(files, data.table::fread, dec=dec)
   
