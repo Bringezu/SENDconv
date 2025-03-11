@@ -29,8 +29,8 @@ loadDomain <- function(domain, dir=dir, pattern=pattern, dec=dec){
     file.info() %>%
     tibble::rownames_to_column() %>% 
     dplyr::filter(as.Date(ctime) > Sys.Date()-md)
+  if (nrow(files)>0) {df <- lapply(files$rowname, data.table::fread, dec=dec)} else(df<-NULL)
   
-  df <- lapply(files$rowname, data.table::fread, dec=dec)
   
   return(df)
 }
