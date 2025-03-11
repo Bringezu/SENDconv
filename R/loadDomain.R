@@ -24,7 +24,7 @@ loadDomain <- function(domain, dir=dir, pattern=pattern, dec=dec){
   # files <- list.files(dir, pattern=pattern,ignore.case = T, full.names=TRUE)
   
   # filter files per date (only files not older than 7 days)
-  max_days<-7
+  max_day<-7
   files <- list.files(dir,pattern=pattern,ignore.case = T, full.names=TRUE) %>% 
     file.info() %>%
     tibble::rownames_to_column() %>% 
