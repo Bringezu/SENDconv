@@ -31,15 +31,13 @@ convertFW<-function(domainData) {
   
   out_data<-out_data %>% tibble::add_column(DOMAIN='FW',.before="POOLID") # add Domain column
   
-  out_data<-out_data %>% dplyr::mutate(FWORRES=ifelse(is.na(FWORRES), `Food Residue`,FWORRES ))
-  out_data<-out_data %>% dplyr::mutate(FWORRESU=ifelse(FWORRESU=="", `Units (Residue)`, FWORRESU))
+  out_data<-out_data %>% dplyr::mutate(FWORRES=ifelse(is.na(FWORRES), 'Food Residue',FWORRES ))
+  out_data<-out_data %>% dplyr::mutate(FWORRESU=ifelse(FWORRESU=="", 'Units (Residue)', FWORRESU))
   
   out_data<-out_data %>% dplyr::mutate(FWSTRESN = as.numeric(out_data$FWORRES), FWSTRESU = FWORRESU)
   out_data<-out_data %>% dplyr::mutate(FWSTRESC = as.character(out_data$FWORRES))
   
-  # remove unused columns
-  out_data<-out_data %>% dplyr::select(-c('Units (Waste)','Food Waste', 'Food Residue','Units (Residue)'))
-  
+ 
   # Set Date Fomat
   out_data$FWDTC<- format(as.POSIXct(out_data$FWDTC,format='%Y/%m/%d %H:%M:%S'))
   

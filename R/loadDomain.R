@@ -21,7 +21,7 @@ loadDomain <- function(domain, dir=dir, pattern=pattern, dec=dec){
   
   # pattern<-paste0('^SEND_',domain,"-.*.csv")
   # pattern<-paste0('^',domain,"_BASF_.*.CSV")
-  files <- list.files(dir, pattern=pattern,ignore.case = T, full.names=TRUE)
+  # files <- list.files(dir, pattern=pattern,ignore.case = T, full.names=TRUE)
   
   # filter files per date (only files not older than 7 days)
   md<-7
