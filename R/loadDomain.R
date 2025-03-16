@@ -6,7 +6,7 @@
 #' @return data frame containing the data from the input file
 #' @examples
 #' domain<-'BW'
-#' bw<-loadDomain(domain, dir='/inputdir')
+#' bw<-loadDomain(domain, dir='/inputdir', pattern=pattern, dec=dec)
 #' @export
 loadDomain <- function(domain, dir=dir, pattern=pattern, dec=dec){
   if (!methods::hasArg(domain)) {return('please provide a Domain acronyme, e.g. BW for Bodyweight')} 
@@ -24,7 +24,7 @@ loadDomain <- function(domain, dir=dir, pattern=pattern, dec=dec){
   # files <- list.files(dir, pattern=pattern,ignore.case = T, full.names=TRUE)
   
   # filter files per date (only files not older than 7 days)
-  md<-7
+  md<-14
   files <- list.files(dir,pattern=pattern,ignore.case = T, full.names=TRUE) %>% 
     file.info() %>%
     tibble::rownames_to_column() %>% 
