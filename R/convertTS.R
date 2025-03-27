@@ -20,7 +20,7 @@ convertTS<-function(domainData) {
   out_data<-tibble::as_tibble(domainData[[1]])
   # need homogeneous columns types for pivot_longer
   out_data<-out_data%>%dplyr::mutate(SPREFID=`Study Number`,  'Sponsoring Organisation'='Merck') %>%
-    mutate_all(as.character) %>%
+    dplyr::mutate_all(as.character) %>%
     tidyr::pivot_longer(!`Study Number`,names_to="TSPARM", values_to = "TSVAL")
   
   out_data$TSPARMCD<-NA
