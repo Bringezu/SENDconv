@@ -13,52 +13,42 @@
 #'
 convert_BASF_MI<-function(domainName, domainData) {
   stopifnot(is.character(domainName), length(domainName) ==1)
-  SEND_names <-unlist(dictionary %>% dplyr::filter(`Domain Prefix`==domainName) %>% dplyr::select(`Variable Name`))
-  out_data<-tibble::as_tibble(domainData[[1]])
-  names(out_data)[1]<-SEND_names[[1]] # STUDYID
-  names(out_data)[6]<-SEND_names[[3]] # USUBJID
-  names(out_data)[21]<-SEND_names[[12]] # MIORRES
-  names(out_data)[15]<-SEND_names[[20]] # MISPEC
-  #names(out_data)[5]<-SEND_names[[17]] # MISTAT
-  #names(out_data)[8]<-SEND_names[[13]] # Morphology --> MISTRESC
-  #names(out_data)[9]<-SEND_names[[21]] # Locator --> MIANTREG
-  #names(out_data)[10]<-SEND_names[[25]] # sub-locator --> MIDIR
-  names(out_data)[27]<-SEND_names[[24]] # Symmetry -> MILAT
-  names(out_data)[29]<-SEND_names[[16]] # MIDISTR
-  # names(out_data)[15]<-SEND_names[[16]] # Qualifier --> ??
-  names(out_data)[26]<-SEND_names[[28]] # MISEV
-  names(out_data)[16]<-SEND_names[[30]] # MIDTC
-  names(out_data)[8]<-SEND_names[[31]] # MIDY
+  SEND_names<-rdSendig('MI')
+  out_data<-tibble::as_tibble(domainData)
+  
+  names(out_data)[1]<-names(SEND_names[1]) # STUDYID
+  names(out_data)[5]<-names(SEND_names[3]) # USUBJID
+  names(out_data)[8]<-names(SEND_names[32]) # MIDY
+  names(out_data)[9]<-names(SEND_names[31]) # MIDTC
+  names(out_data)[15]<-names(SEND_names[20]) # MISPEC
+  names(out_data)[19]<-names(SEND_names[18]) # MIREASND
+  names(out_data)[21]<-names(SEND_names[12]) # MIORRES
+  names(out_data)[26]<-names(SEND_names[28]) # MIRESCAT
+  names(out_data)[27]<-names(SEND_names[24]) # MILAT
+  names(out_data)[29]<-names(SEND_names[16]) # MIDIST
+  
+  
   
   out_data<-out_data %>% tibble::add_column(DOMAIN='MI',.before="USUBJID") # add Domain column
   
   out_data$USUBJID<-paste0(out_data$STUDYID,"-",out_data$USUBJID) # modify USUBJID
   
-  # out_data<-out_data %>% dplyr::mutate(MIORRES = ifelse(NVL == 'No Visible Lesions', 'NO VISIBLE LESIONS' , MIORRES))
-  # out_data<-out_data %>% dplyr::mutate(MIORRES = ifelse(MISTAT == 'Not Examined', 'NOT EXAMINED' , MIORRES))
-  # out_data<-out_data %>% dplyr::mutate(MIANTREG = ifelse(MIDIR != '' & MIANTREG !='', paste0(MIANTREG,', ',MIDIR), MIANTREG))
-  # out_data<-out_data %>% dplyr::mutate(MIANTREG = ifelse(Qualifier != '' & MIANTREG !='', paste0(MIANTREG,', ',Qualifier), MIANTREG))
-  # out_data<-out_data %>% dplyr::mutate(MIANTREG = ifelse(Qualifier != '' & MIANTREG =='', paste0(Qualifier), MIANTREG))
-  # out_data<-out_data %>% dplyr::mutate(MILAT = ifelse(MIDIR == 'left', paste0(MIDIR), MILAT))
-  # out_data<-out_data %>% dplyr::mutate(MIDIR = ifelse(MIDIR == 'left', '', MIDIR))
-  # out_data<-out_data %>% dplyr::mutate(MILAT = ifelse(MIDIR == 'right', paste0(MIDIR), MILAT))
-  # out_data<-out_data %>% dplyr::mutate(MIDIR = ifelse(MIDIR == 'right', '', MIDIR))
+  out_data<-out_data %>% dplyr::mutate(MIORRES = ifelse(`No lesions visible)` == 'Yes', 'UNREMARKABLE' , MIORRES))
+  
   
   # remove unused columns
-  out_data<-out_data %>% dplyr::select(any_of(unname(SEND_names)))
+  out_data<-out_data %>% dplyr::select(any_of(names(SEND_names)))
+  
+  
+  # set correct date fomat
+  Sys.setlocale("LC_ALL", "English")
+  out_data$MIDTC<- format(as.POSIXct(out_data$MIDTC,format="%d-%b-%Y %H:%M"))
+  Sys.setlocale("LC_ALL", "de_DE.UTF-8")
   
   
   # toupper all relevant cols
   out_data<-out_data %>% dplyr::mutate_all(.funs=toupper)
-  # out_data$MIDISTR<-toupper(out_data$MIDISTR)
-  # out_data$MISPEC<-toupper(out_data$MISPEC)
-  # out_data$MISTRESC<-toupper(out_data$MISTRESC)
-  # out_data$MIANTREG<-toupper(out_data$MIANTREG)
-  # out_data$MILAT<-toupper(out_data$MILAT)
-  # out_data$MISEV<-toupper(out_data$MISEV)
-  # out_data$MISTAT<-toupper(out_data$MISTAT)
-  # out_data$MIDIR<-toupper(out_data$MIDIR)
-  # out_data$MIDTC<- format(as.POSIXct(out_data$MIDTC,format='%Y/%m/%d %H:%M:%S'))
+
   # 
   return(out_data)
 }

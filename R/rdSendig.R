@@ -10,10 +10,10 @@
 #'  domainData<-rdSendig(domainName)
 #'
 rdSendig<-function(domainName) {
-  d<-dictionary %>% dplyr::filter(`Domain Prefix`==domainName)
-  d<-d %>% dplyr::select(c('Variable Name')) # Select the column with the Variable Names
+  d<-dict$SENDIG_DART_11_VICT3R_21 %>% dplyr::filter(`DomainPrefix`==domainName)
+  d<-d %>% dplyr::select(c('VariableName')) # Select the column with the Variable Names
   d$val='' ## add value column for temporary use only
-  dd<-tidyr::pivot_wider(d, names_from = 'Variable Name', values_from = 'val') %>% 
+  dd<-tidyr::pivot_wider(d, names_from = 'VariableName', values_from = 'val') %>% 
     dplyr::rows_delete(dplyr::tibble(STUDYID=''))
   return(dd)
 }

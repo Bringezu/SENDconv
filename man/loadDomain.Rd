@@ -4,12 +4,12 @@
 \alias{loadDomain}
 \title{loadDomain}
 \usage{
-loadDomain(domain, dir = dir, pattern = pattern, dec = dec)
+loadDomain(domain, dir = dir, pattern = pattern, dec = dec, sep = sep)
 }
 \arguments{
 \item{domain}{A character vector that contains the acronym for the domain}
 
-\item{dir}{The directory name containng the input files}
+\item{dir}{The directory name containing the input files}
 }
 \value{
 data frame containing the data from the input file
@@ -19,5 +19,5 @@ loadDomain
 }
 \examples{
 domain<-'BW'
-bw<-loadDomain(domain, dir='/inputdir')
+bw<-loadDomain(domain, dir='/inputdir', pattern=pattern, dec=dec)
 }

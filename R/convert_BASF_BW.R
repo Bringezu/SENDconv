@@ -11,19 +11,21 @@
 #'  domainData<-loadDomain(domainName)
 #'  SEND<-convertBW(domainName, domainData)
 #'
-convert_BSAF_BW<-function(domainName, domainData) {
+convert_BASF_BW<-function(domainName, domainData) {
   stopifnot(is.character(domainName), length(domainName) ==1)
-  SEND_names <-unlist(dictionary %>% dplyr::filter(`Domain Prefix`==domainName) %>% dplyr::select(`Variable Name`))
-  out_data<-tibble::as_tibble(domainData[[1]])
-  names(out_data)[1]<-SEND_names[[1]] # STUDYID
-  names(out_data)[6]<-SEND_names[[3]] # USUBJID
-  names(out_data)[15]<-SEND_names[[6]] # BWTEST
-  names(out_data)[18]<-SEND_names[[7]] # BWORRES
-  names(out_data)[19]<-SEND_names[[8]] # BWORRESU
-  names(out_data)[13]<-SEND_names[[20]] # BWDTC
-  names(out_data)[12]<-SEND_names[[21]] # BWDY
-  names(out_data)[11]<-SEND_names[[22]] # BWNOMDY
-  
+  SEND_names<-rdSendig('BW')
+  out_data<-domainData
+  names(out_data)[1]<-names(SEND_names)[1] # STUDYID
+  names(out_data)[5]<-names(SEND_names)[3] # USUBJID
+  names(out_data)[15]<-names(SEND_names)[6] # BWTEST
+  names(out_data)[18]<-names(SEND_names)[7] # BWORRES
+  names(out_data)[19]<-names(SEND_names)[8] # BWORRESU
+  names(out_data)[13]<-names(SEND_names)[22] # BWDTC
+  names(out_data)[12]<-names(SEND_names)[23] # BWDY
+  names(out_data)[10]<-names(SEND_names)[20] # RPHASE
+  names(out_data)[11]<-names(SEND_names)[26] # BWRPDY
+
+  # browser()
   out_data$USUBJID<-paste0(out_data$STUDYID,"-",out_data$USUBJID) # modify USUBJID
   out_data<-out_data %>% tibble::add_column(DOMAIN='BW',.before="USUBJID") # add Domain column
   out_data<-out_data %>% tibble::add_column(BWTESTCD="",.before="BWTEST") # add BWTESTCD column
@@ -50,10 +52,12 @@ convert_BSAF_BW<-function(domainName, domainData) {
   # out_data$BWNOMDY<-out_data$BWDY
   
   # set correct date fomat
-  # out_data$BWDTC<- format(as.POSIXct(out_data$BWDTC,format='%d-%m-%Y %H:%M'))
+  Sys.setlocale("LC_ALL", "English")
+  out_data$BWDTC<- format(as.POSIXct(out_data$BWDTC,format="%d-%b-%Y %H:%M"))
+  Sys.setlocale("LC_ALL", "de_DE.UTF-8")
   
   # remove unused columns
-  out_data<-out_data %>% dplyr::select(any_of(unname(SEND_names)))
+  out_data<-out_data %>% dplyr::select(any_of(names(SEND_names)))
   return(out_data)
   
   
