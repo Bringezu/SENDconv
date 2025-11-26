@@ -23,6 +23,7 @@ convertTS<-function(domainData) {
     dplyr::mutate_all(as.character) %>%
     tidyr::pivot_longer(!`Study Number`,names_to="TSPARM", values_to = "TSVAL")
   
+  names(out_data)[1]<-'STUDYID'
   out_data$TSPARMCD<-NA
   out_data <- out_data %>% dplyr::mutate(TSPARMCD=ifelse(TSPARM=='Study Title', 'STITLE', TSPARMCD))
   out_data <- out_data %>% dplyr::mutate(TSPARMCD=ifelse(TSPARM=='Species', 'SPECIES', TSPARMCD))
@@ -40,6 +41,7 @@ convertTS<-function(domainData) {
   out_data <- out_data %>% dplyr::mutate(TSPARMCD=ifelse(TSPARM=='Study Status', 'SSTATUS', TSPARMCD))
   out_data <- out_data %>% dplyr::mutate(TSPARMCD=ifelse(TSPARM=='Study Director', 'SDIR', TSPARMCD))
   out_data <- out_data %>% dplyr::mutate(TSPARMCD=ifelse(TSPARM=='Account Code', 'SCODE', TSPARMCD))
+  out_data <- out_data %>% dplyr::mutate(TSPARMCD=ifelse(TSPARM=='SPREFID', 'STUDYID', TSPARMCD))
   
   out_data <- out_data %>% dplyr::mutate(TSVAL=ifelse(TSPARMCD=='RFSTDTC',format(as.POSIXct(TSVAL,format='%Y/%m/%d %H:%M:%S')) , TSVAL))
   out_data <- out_data %>% dplyr::mutate(TSVAL=ifelse(TSPARMCD=='RFENDTC',format(as.POSIXct(TSVAL,format='%Y/%m/%d %H:%M:%S')) , TSVAL))
