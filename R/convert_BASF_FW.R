@@ -1,4 +1,4 @@
-#' convert_BASFF_FW
+#' convert_BASF_FW
 #'
 #' @param domainName A character vector that contains the acronym for the domain
 #' @param domainData The data frame containing the export of Provantis
@@ -13,29 +13,64 @@
 #'
 convert_BASF_FW<-function(domainName, domainData) {
   stopifnot(is.character(domainName), length(domainName) ==1)
-  SEND_names <-unlist(dictionary %>% dplyr::filter(`Domain Prefix`=="FW") %>% dplyr::select(`Variable Name`))
-  out_data<-tibble::as_tibble(domainData[[1]])
+  SEND_names<-rdSendig('FW')
+  out_data<-domainData
   
-  names(out_data)[1]<-SEND_names[[1]] # STUDYID
-  names(out_data)[6]<-SEND_names[[3]] # USUBJID
-  names(out_data)[15]<-SEND_names[[4]] # POOLID
-  names(out_data)[14]<-SEND_names[[8]] # FWTEST
-  names(out_data)[13]<-SEND_names[[18]] # FWDTC
-  names(out_data)[12]<-SEND_names[[20]] # FWDY
-  names(out_data)[19]<-SEND_names[[9]] # FWORRES
-  names(out_data)[20]<-SEND_names[[10]] # FWORRESU
-  
-  
+  names(out_data)[1]<-names(SEND_names)[1] # STUDYID
+  names(out_data)[5]<-names(SEND_names)[3] # USUBJID
   out_data$USUBJID<-paste0(out_data$STUDYID,"-",out_data$USUBJID) # modify USUBJID
+  names(out_data)[12]<-names(SEND_names)[23] # FWDY
+  names(out_data)[17]<-names(SEND_names)[8] # FWTEST
+  names(out_data)[19]<-names(SEND_names)[9] # FWORRES
+  names(out_data)[20]<-names(SEND_names)[10] # FWORRESU
+  names(out_data)[13]<-names(SEND_names)[21] # FWORRESU
+
   
-  # out_data<-out_data %>% tibble::add_column(DOMAIN='FW',.before="USUBJID") # add Domain column
-  out_data<-out_data %>% dplyr::mutate(FWTESTCD = ifelse(FWTEST == 'Food', 'FOOD' , ''))
   
-  out_data<-out_data %>% dplyr::mutate(FWSTRESN = as.numeric(out_data$FWORRES), FWSTRESU = FWORRESU)
-  out_data<-out_data %>% dplyr::mutate(FWSTRESC = as.character(out_data$FWORRES))
+  ## start pre processing
+  water<-out_data %>% filter(`Food/water`=='Water')
+  food<-out_data %>% filter(`Food/water`=='Food')
   
+  water<-water %>% distinct(STUDYID, USUBJID, FWDY, FWDTC, FWORRES, .keep_all = T) |> 
+    mutate(FWORRES = lag(FWORRES, order_by = c(USUBJID, FWDY))-lead(FWORRES), 
+           DOMAIN='FW',
+           RPHASE=toupper(`Repro. phase`),
+           days=lead(FWDY)-FWDY,
+           FWENDY=lead(FWDY),
+           FWENDTC=lead(FWDTC),
+           FWTEST='WATER CONSUMPTION',
+           FWTESTCD='WC',
+           FWDY=lag(FWDY)+1,
+           type='Food') |>
+    filter(FWORRES > 0) |> 
+    mutate(FWORRES=as.numeric(FWORRES), 
+           days=as.numeric(days)) |>
+    filter(days!=0) |>
+    mutate(FWSTRESC = signif(FWORRES/days, digits=4), FWORRESU='g', FWSTRESU='g/animal/day' )
+  
+  food<-food %>% distinct(STUDYID, USUBJID, FWDY, FWDTC, FWORRES, .keep_all = T) |> 
+    mutate(FWORRES = lag(FWORRES, order_by = c(USUBJID, FWDY))-lead(FWORRES), 
+           DOMAIN='FW',
+           RPHASE=toupper(`Repro. phase`),
+           days=lead(FWDY)-FWDY,
+           FWENDY=lead(FWDY),
+           FWENDTC=lead(FWDTC),
+           FWTEST='FOOD CONSUMPTION',
+           FWTESTCD='FC',
+           FWDY=lag(FWDY)+1,
+           type='Food') |>
+    filter(FWORRES > 0) |> 
+    mutate(FWORRES=as.numeric(FWORRES), 
+           days=as.numeric(days)) |>
+    filter(days!=0) |>
+    mutate(FWSTRESC = signif(FWORRES/days, digits=4), FWORRESU='g', FWSTRESU='g/animal/day' )
+  
+  tmp<-rbind(food, water)
+  
+ 
+
   # remove unused columns
-  out_data<-out_data %>% dplyr::select(any_of(unname(SEND_names)))
+  out_data<-tmp %>% dplyr::select(any_of(names(SEND_names)))
   
   
   return(out_data)

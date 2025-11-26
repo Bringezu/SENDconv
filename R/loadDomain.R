@@ -13,10 +13,10 @@ loadDomain <- function(domain, dir=dir, pattern=pattern, dec=dec, sep=sep){
   # If no dir was provided, select a  directory 
   if (!methods::hasArg(dir)) {dir<- dirname(file.choose())} # 
   # Define a default pattern
-  if (!methods::hasArg(pattern)) {pattern<- paste0('SEND_',domain,'-.*.csv')}  
+  if (!methods::hasArg(pattern)) {pattern<-domain}  
   # Define a default pattern
-  if (!methods::hasArg(dec)) {dec<- '.'}  
-  
+  if (!methods::hasArg(dec)) {dec<- '.'}
+  if (!methods::hasArg(dec)) {sep<- ','} 
   stopifnot(is.character(domain), length(domain) ==1)
   
   # pattern<-paste0('^SEND_',domain,"-.*.csv")

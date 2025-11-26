@@ -8,7 +8,7 @@
 #' @examples
 #'  SEND<-convertDM(domainData)
 #'
-convertDM<-function(domainData) {
+convertDM<-function(domainName, domainData) {
   
   # load SEND names from Standard
   SEND_names<-rdSendig('DM')

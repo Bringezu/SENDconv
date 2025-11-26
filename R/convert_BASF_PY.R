@@ -123,6 +123,8 @@ convert_BASF_PY<-function(domainName, domainData) {
   
   SEND_names<-SEND_names %>% tibble::add_row(implants)
   
+  # toupper all relevant cols
+  out_data<-out_data %>% dplyr::mutate_all(.funs=toupper)
   ##########################
   return(SEND_names)
   

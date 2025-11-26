@@ -51,6 +51,9 @@ convert_BASF_BW<-function(domainName, domainData) {
   # copy values from BWNOMDY to BWDY
   # out_data$BWNOMDY<-out_data$BWDY
   
+  # toupper all relevant cols
+  out_data<-out_data %>% dplyr::mutate_all(.funs=toupper)
+  
   # set correct date fomat
   Sys.setlocale("LC_ALL", "English")
   out_data$BWDTC<- format(as.POSIXct(out_data$BWDTC,format="%d-%b-%Y %H:%M"))

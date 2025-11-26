@@ -8,8 +8,8 @@
 #' @examples
 #'  SEND<-convertDM(domainData)
 #'
-convert_BASF_DM<-function(domainData) {
-  
+convert_BASF_DM<-function(domainName, domainData) {
+  stopifnot(is.character(domainName), length(domainName) ==1)
   # load SEND names from Standard
   SEND_names<-rdSendig('DM')
   out_data<-tibble::as_tibble(domainData)
@@ -55,6 +55,9 @@ convert_BASF_DM<-function(domainData) {
   out_data$SBSTRAIN<-'NULL'
   out_data$SITEID<-'NULL'
   out_data$SETCD<-'NULL'
+  
+  # toupper all relevant cols
+  out_data<-out_data %>% dplyr::mutate_all(.funs=toupper)
   
   return(out_data)
   
